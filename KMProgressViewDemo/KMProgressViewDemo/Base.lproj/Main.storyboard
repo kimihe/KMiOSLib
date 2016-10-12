@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="This demo shows how KMProgressView works. You are unable to touch buttons when there is a progress on screen. " textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gRp-5O-q9C">
+                                <rect key="frame" x="29.5" y="70" width="541" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="HIf-yg-qix"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NfP-VI-kRI">
+                                <rect key="frame" x="230" y="150" width="140" height="30"/>
+                                <state key="normal" title="Progress Completed">
+                                    <color key="titleColor" red="0.2470588235" green="0.85490196080000003" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="clickProgressCompletedBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="lgQ-KA-SIT"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UwI-yx-x4c">
+                                <rect key="frame" x="248" y="210" width="105" height="30"/>
+                                <state key="normal" title="Progress Failed">
+                                    <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="clickProgressFailedBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="e2a-cY-b0I"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="UwI-yx-x4c" firstAttribute="top" secondItem="NfP-VI-kRI" secondAttribute="bottom" constant="30" id="0pn-U8-mWm"/>
+                            <constraint firstItem="gRp-5O-q9C" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.9" constant="1" id="Avf-Xg-gXU"/>
+                            <constraint firstItem="NfP-VI-kRI" firstAttribute="top" secondItem="gRp-5O-q9C" secondAttribute="bottom" constant="30" id="QRb-wH-s3a"/>
+                            <constraint firstItem="NfP-VI-kRI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="QVD-13-caa"/>
+                            <constraint firstItem="gRp-5O-q9C" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="dOv-Wh-CWj"/>
+                            <constraint firstItem="UwI-yx-x4c" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="giV-3L-ULp"/>
+                            <constraint firstItem="gRp-5O-q9C" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="50" id="uVL-R1-7AK"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="140" y="137"/>
+        </scene>
+    </scenes>
+</document>
