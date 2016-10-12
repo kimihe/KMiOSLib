@@ -28,11 +28,11 @@
 
 @implementation KMProgressView
 {
-    UIView         *_boxCoverView;    //!< 上传进度弹出框的底色遮罩
-    UIImageView    *_boxImageView;    //!< 上传进度弹出框的背景图
-    UILabel        *_boxTitleLabel;   //!< 上传进度弹出框的标题
-    UILabel        *_boxNumberlabel;  //!< 上传进度数值标题
-    UIProgressView *_boxProgressView; //!< 上传进度弹出框的进度条
+    UIView         *_boxCoverView;    //!< 进度弹窗的底色遮罩
+    UIImageView    *_boxImageView;    //!< 进度弹窗的背景图
+    UILabel        *_boxTitleLabel;   //!< 进度弹窗的标题
+    UILabel        *_boxNumberlabel;  //!< 进度数值标题
+    UIProgressView *_boxProgressView; //!< 进度弹窗的进度条
 }
 
 //此处没有重写initWithFrame方法，因为progressView类似于alert，其大小不需要人为再去设定
