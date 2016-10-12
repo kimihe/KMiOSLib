@@ -35,14 +35,7 @@
     UIProgressView *_boxProgressView; //!< 上传进度弹出框的进度条
 }
 
-//ARC forbids explicit message senf of 'delloc'
-//- (void)dealloc
-//{
-//    //self 释放， subViews也会释放
-//    
-//    [super dealloc];
-//}
-
+//此处没有重写initWithFrame方法，因为progressView类似于alert，其大小不需要人为再去设定
 - (instancetype)init
 {
     self = [super initWithFrame:CGRectMake(0, 0, kboxImageView_width, kboxImageView_height)];
