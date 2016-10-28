@@ -14,6 +14,7 @@
 
 @interface ViewController ()<KMNineBoxViewDelegate>
 @property (strong, nonatomic)KMNineBoxView *nineBoxView;
+@property (weak, nonatomic) IBOutlet UILabel *label;
 
 @end
 
@@ -33,6 +34,7 @@
 //    self.nineBoxView.animationStyle = KMJellyViewAnimationStyle_stretch;
     [self.view addSubview:self.nineBoxView];
     self.nineBoxView.center = self.view.center;
+    self.nineBoxView.frame = CGRectMake(0, 0, 200, 200);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -45,21 +47,25 @@
     NSLog(@"NineBox Sequrnce is: %@", sequenceStr);
     if ([sequenceStr isEqualToString:kpasswd]) {
         NSLog(@"PASS!!!");
+        self.label.text = @"PASS!!!";
+    }
+    else {
+        self.label.text = @"Password incorrect!";
     }
 }
 
 - (IBAction)pressReloadBtn:(UIButton *)sender {
     
     if (self.nineBoxView) {
-        self.nineBoxView = nil;
         self.nineBoxView.layer.sublayers = nil;
+        self.nineBoxView = nil;
     }
     
-//    self.nineBoxView = [[KMNineBoxView alloc] initWithFrame:CGRectMake(0, 0, kSCREEN_WIDTH, kSCREEN_WIDTH)];
-//    self.nineBoxView.delegate = self;
-//    //    self.nineBoxView.animationStyle = KMJellyViewAnimationStyle_stretch;
-//    [self.view addSubview:self.nineBoxView];
-//    self.nineBoxView.center = self.view.center;
+    self.nineBoxView = [[KMNineBoxView alloc] initWithFrame:CGRectMake(0, 0, kSCREEN_WIDTH, kSCREEN_WIDTH)];
+    self.nineBoxView.delegate = self;
+    //    self.nineBoxView.animationStyle = KMJellyViewAnimationStyle_stretch;
+    [self.view addSubview:self.nineBoxView];
+    self.nineBoxView.center = self.view.center;
 }
 
 @end

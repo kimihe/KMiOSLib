@@ -6,7 +6,7 @@
 //  Copyright © 2016年 周祺华. All rights reserved.
 //
 
-#define USE_DEBUG 0
+#define USE_DEBUG 1
 #define USE_DRAWRECT 0
 
 #import "KMNineBoxView.h"
@@ -169,6 +169,13 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
 
 - (void)reloadNineBox
 {
+    self.layer.sublayers = nil;
+    [self drawNineBox];
+}
+
+- (void)clearNineBox
+{
+    self.layer.sublayers = nil;
     [self drawNineBox];
 }
 
@@ -388,6 +395,7 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     [self.delegate nineBoxDidFinishWithSequence:sequenceStr];
     
     [_sequenceArr removeAllObjects];
+    [self clearNineBox];
 }
 
 
