@@ -1,0 +1,549 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BB61EDCE1DC3274C00A6DC67 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BB61EDCD1DC3274C00A6DC67 /* main.m */; };
+		BB61EDD11DC3274C00A6DC67 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB61EDD01DC3274C00A6DC67 /* AppDelegate.m */; };
+		BB61EDD41DC3274C00A6DC67 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB61EDD31DC3274C00A6DC67 /* ViewController.m */; };
+		BB61EDD71DC3274C00A6DC67 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB61EDD51DC3274C00A6DC67 /* Main.storyboard */; };
+		BB61EDD91DC3274C00A6DC67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB61EDD81DC3274C00A6DC67 /* Assets.xcassets */; };
+		BB61EDDC1DC3274C00A6DC67 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB61EDDA1DC3274C00A6DC67 /* LaunchScreen.storyboard */; };
+		BB61EDE71DC3274C00A6DC67 /* KMNineBoxDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BB61EDE61DC3274C00A6DC67 /* KMNineBoxDemoTests.m */; };
+		BB61EDF21DC3274C00A6DC67 /* KMNineBoxDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = BB61EDF11DC3274C00A6DC67 /* KMNineBoxDemoUITests.m */; };
+		BB61EE021DC3279E00A6DC67 /* KMNineBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB61EE011DC3279E00A6DC67 /* KMNineBoxView.m */; };
+		BB61EE051DC3293A00A6DC67 /* CheckTraceRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = BB61EE041DC3293A00A6DC67 /* CheckTraceRecognizer.m */; };
+		BB61EE091DC3649200A6DC67 /* KMMathHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = BB61EE081DC3649200A6DC67 /* KMMathHelper.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BB61EDE31DC3274C00A6DC67 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BB61EDC11DC3274C00A6DC67 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BB61EDC81DC3274C00A6DC67;
+			remoteInfo = KMNineBoxDemo;
+		};
+		BB61EDEE1DC3274C00A6DC67 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BB61EDC11DC3274C00A6DC67 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BB61EDC81DC3274C00A6DC67;
+			remoteInfo = KMNineBoxDemo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		BB61EDC91DC3274C00A6DC67 /* KMNineBoxDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KMNineBoxDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB61EDCD1DC3274C00A6DC67 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BB61EDCF1DC3274C00A6DC67 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		BB61EDD01DC3274C00A6DC67 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		BB61EDD21DC3274C00A6DC67 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		BB61EDD31DC3274C00A6DC67 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		BB61EDD61DC3274C00A6DC67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		BB61EDD81DC3274C00A6DC67 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BB61EDDB1DC3274C00A6DC67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BB61EDDD1DC3274C00A6DC67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BB61EDE21DC3274C00A6DC67 /* KMNineBoxDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KMNineBoxDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB61EDE61DC3274C00A6DC67 /* KMNineBoxDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KMNineBoxDemoTests.m; sourceTree = "<group>"; };
+		BB61EDE81DC3274C00A6DC67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BB61EDED1DC3274C00A6DC67 /* KMNineBoxDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KMNineBoxDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB61EDF11DC3274C00A6DC67 /* KMNineBoxDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KMNineBoxDemoUITests.m; sourceTree = "<group>"; };
+		BB61EDF31DC3274C00A6DC67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BB61EE001DC3279E00A6DC67 /* KMNineBoxView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMNineBoxView.h; sourceTree = "<group>"; };
+		BB61EE011DC3279E00A6DC67 /* KMNineBoxView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMNineBoxView.m; sourceTree = "<group>"; };
+		BB61EE031DC3293A00A6DC67 /* CheckTraceRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckTraceRecognizer.h; sourceTree = "<group>"; };
+		BB61EE041DC3293A00A6DC67 /* CheckTraceRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckTraceRecognizer.m; sourceTree = "<group>"; };
+		BB61EE061DC3318C00A6DC67 /* KMUIKitMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KMUIKitMacro.h; sourceTree = "<group>"; };
+		BB61EE071DC3649200A6DC67 /* KMMathHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMMathHelper.h; sourceTree = "<group>"; };
+		BB61EE081DC3649200A6DC67 /* KMMathHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMMathHelper.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BB61EDC61DC3274C00A6DC67 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB61EDDF1DC3274C00A6DC67 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB61EDEA1DC3274C00A6DC67 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BB61EDC01DC3274C00A6DC67 = {
+			isa = PBXGroup;
+			children = (
+				BB61EDCB1DC3274C00A6DC67 /* KMNineBoxDemo */,
+				BB61EDE51DC3274C00A6DC67 /* KMNineBoxDemoTests */,
+				BB61EDF01DC3274C00A6DC67 /* KMNineBoxDemoUITests */,
+				BB61EDCA1DC3274C00A6DC67 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BB61EDCA1DC3274C00A6DC67 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BB61EDC91DC3274C00A6DC67 /* KMNineBoxDemo.app */,
+				BB61EDE21DC3274C00A6DC67 /* KMNineBoxDemoTests.xctest */,
+				BB61EDED1DC3274C00A6DC67 /* KMNineBoxDemoUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BB61EDCB1DC3274C00A6DC67 /* KMNineBoxDemo */ = {
+			isa = PBXGroup;
+			children = (
+				BB61EDFF1DC3276600A6DC67 /* KMNineBoxView */,
+				BB61EDCF1DC3274C00A6DC67 /* AppDelegate.h */,
+				BB61EDD01DC3274C00A6DC67 /* AppDelegate.m */,
+				BB61EDD21DC3274C00A6DC67 /* ViewController.h */,
+				BB61EDD31DC3274C00A6DC67 /* ViewController.m */,
+				BB61EDD51DC3274C00A6DC67 /* Main.storyboard */,
+				BB61EDD81DC3274C00A6DC67 /* Assets.xcassets */,
+				BB61EDDA1DC3274C00A6DC67 /* LaunchScreen.storyboard */,
+				BB61EDDD1DC3274C00A6DC67 /* Info.plist */,
+				BB61EDCC1DC3274C00A6DC67 /* Supporting Files */,
+			);
+			path = KMNineBoxDemo;
+			sourceTree = "<group>";
+		};
+		BB61EDCC1DC3274C00A6DC67 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BB61EDCD1DC3274C00A6DC67 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BB61EDE51DC3274C00A6DC67 /* KMNineBoxDemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				BB61EDE61DC3274C00A6DC67 /* KMNineBoxDemoTests.m */,
+				BB61EDE81DC3274C00A6DC67 /* Info.plist */,
+			);
+			path = KMNineBoxDemoTests;
+			sourceTree = "<group>";
+		};
+		BB61EDF01DC3274C00A6DC67 /* KMNineBoxDemoUITests */ = {
+			isa = PBXGroup;
+			children = (
+				BB61EDF11DC3274C00A6DC67 /* KMNineBoxDemoUITests.m */,
+				BB61EDF31DC3274C00A6DC67 /* Info.plist */,
+			);
+			path = KMNineBoxDemoUITests;
+			sourceTree = "<group>";
+		};
+		BB61EDFF1DC3276600A6DC67 /* KMNineBoxView */ = {
+			isa = PBXGroup;
+			children = (
+				BB61EE061DC3318C00A6DC67 /* KMUIKitMacro.h */,
+				BB61EE071DC3649200A6DC67 /* KMMathHelper.h */,
+				BB61EE081DC3649200A6DC67 /* KMMathHelper.m */,
+				BB61EE001DC3279E00A6DC67 /* KMNineBoxView.h */,
+				BB61EE011DC3279E00A6DC67 /* KMNineBoxView.m */,
+				BB61EE031DC3293A00A6DC67 /* CheckTraceRecognizer.h */,
+				BB61EE041DC3293A00A6DC67 /* CheckTraceRecognizer.m */,
+			);
+			name = KMNineBoxView;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BB61EDC81DC3274C00A6DC67 /* KMNineBoxDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB61EDF61DC3274C00A6DC67 /* Build configuration list for PBXNativeTarget "KMNineBoxDemo" */;
+			buildPhases = (
+				BB61EDC51DC3274C00A6DC67 /* Sources */,
+				BB61EDC61DC3274C00A6DC67 /* Frameworks */,
+				BB61EDC71DC3274C00A6DC67 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KMNineBoxDemo;
+			productName = KMNineBoxDemo;
+			productReference = BB61EDC91DC3274C00A6DC67 /* KMNineBoxDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BB61EDE11DC3274C00A6DC67 /* KMNineBoxDemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB61EDF91DC3274C00A6DC67 /* Build configuration list for PBXNativeTarget "KMNineBoxDemoTests" */;
+			buildPhases = (
+				BB61EDDE1DC3274C00A6DC67 /* Sources */,
+				BB61EDDF1DC3274C00A6DC67 /* Frameworks */,
+				BB61EDE01DC3274C00A6DC67 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BB61EDE41DC3274C00A6DC67 /* PBXTargetDependency */,
+			);
+			name = KMNineBoxDemoTests;
+			productName = KMNineBoxDemoTests;
+			productReference = BB61EDE21DC3274C00A6DC67 /* KMNineBoxDemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		BB61EDEC1DC3274C00A6DC67 /* KMNineBoxDemoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB61EDFC1DC3274C00A6DC67 /* Build configuration list for PBXNativeTarget "KMNineBoxDemoUITests" */;
+			buildPhases = (
+				BB61EDE91DC3274C00A6DC67 /* Sources */,
+				BB61EDEA1DC3274C00A6DC67 /* Frameworks */,
+				BB61EDEB1DC3274C00A6DC67 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BB61EDEF1DC3274C00A6DC67 /* PBXTargetDependency */,
+			);
+			name = KMNineBoxDemoUITests;
+			productName = KMNineBoxDemoUITests;
+			productReference = BB61EDED1DC3274C00A6DC67 /* KMNineBoxDemoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BB61EDC11DC3274C00A6DC67 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = "周祺华";
+				TargetAttributes = {
+					BB61EDC81DC3274C00A6DC67 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+					BB61EDE11DC3274C00A6DC67 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = BB61EDC81DC3274C00A6DC67;
+					};
+					BB61EDEC1DC3274C00A6DC67 = {
+						CreatedOnToolsVersion = 7.3;
+						TestTargetID = BB61EDC81DC3274C00A6DC67;
+					};
+				};
+			};
+			buildConfigurationList = BB61EDC41DC3274C00A6DC67 /* Build configuration list for PBXProject "KMNineBoxDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BB61EDC01DC3274C00A6DC67;
+			productRefGroup = BB61EDCA1DC3274C00A6DC67 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BB61EDC81DC3274C00A6DC67 /* KMNineBoxDemo */,
+				BB61EDE11DC3274C00A6DC67 /* KMNineBoxDemoTests */,
+				BB61EDEC1DC3274C00A6DC67 /* KMNineBoxDemoUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BB61EDC71DC3274C00A6DC67 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB61EDDC1DC3274C00A6DC67 /* LaunchScreen.storyboard in Resources */,
+				BB61EDD91DC3274C00A6DC67 /* Assets.xcassets in Resources */,
+				BB61EDD71DC3274C00A6DC67 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB61EDE01DC3274C00A6DC67 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB61EDEB1DC3274C00A6DC67 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BB61EDC51DC3274C00A6DC67 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB61EE051DC3293A00A6DC67 /* CheckTraceRecognizer.m in Sources */,
+				BB61EE021DC3279E00A6DC67 /* KMNineBoxView.m in Sources */,
+				BB61EDD41DC3274C00A6DC67 /* ViewController.m in Sources */,
+				BB61EDD11DC3274C00A6DC67 /* AppDelegate.m in Sources */,
+				BB61EDCE1DC3274C00A6DC67 /* main.m in Sources */,
+				BB61EE091DC3649200A6DC67 /* KMMathHelper.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB61EDDE1DC3274C00A6DC67 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB61EDE71DC3274C00A6DC67 /* KMNineBoxDemoTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB61EDE91DC3274C00A6DC67 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB61EDF21DC3274C00A6DC67 /* KMNineBoxDemoUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BB61EDE41DC3274C00A6DC67 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BB61EDC81DC3274C00A6DC67 /* KMNineBoxDemo */;
+			targetProxy = BB61EDE31DC3274C00A6DC67 /* PBXContainerItemProxy */;
+		};
+		BB61EDEF1DC3274C00A6DC67 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BB61EDC81DC3274C00A6DC67 /* KMNineBoxDemo */;
+			targetProxy = BB61EDEE1DC3274C00A6DC67 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		BB61EDD51DC3274C00A6DC67 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BB61EDD61DC3274C00A6DC67 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		BB61EDDA1DC3274C00A6DC67 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BB61EDDB1DC3274C00A6DC67 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BB61EDF41DC3274C00A6DC67 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BB61EDF51DC3274C00A6DC67 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BB61EDF71DC3274C00A6DC67 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = KMNineBoxDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = KimiKimi.KMNineBoxDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BB61EDF81DC3274C00A6DC67 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = KMNineBoxDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = KimiKimi.KMNineBoxDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		BB61EDFA1DC3274C00A6DC67 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = KMNineBoxDemoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = KimiKimi.KMNineBoxDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KMNineBoxDemo.app/KMNineBoxDemo";
+			};
+			name = Debug;
+		};
+		BB61EDFB1DC3274C00A6DC67 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = KMNineBoxDemoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = KimiKimi.KMNineBoxDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KMNineBoxDemo.app/KMNineBoxDemo";
+			};
+			name = Release;
+		};
+		BB61EDFD1DC3274C00A6DC67 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = KMNineBoxDemoUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = KimiKimi.KMNineBoxDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = KMNineBoxDemo;
+			};
+			name = Debug;
+		};
+		BB61EDFE1DC3274C00A6DC67 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = KMNineBoxDemoUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = KimiKimi.KMNineBoxDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = KMNineBoxDemo;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BB61EDC41DC3274C00A6DC67 /* Build configuration list for PBXProject "KMNineBoxDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB61EDF41DC3274C00A6DC67 /* Debug */,
+				BB61EDF51DC3274C00A6DC67 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BB61EDF61DC3274C00A6DC67 /* Build configuration list for PBXNativeTarget "KMNineBoxDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB61EDF71DC3274C00A6DC67 /* Debug */,
+				BB61EDF81DC3274C00A6DC67 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		BB61EDF91DC3274C00A6DC67 /* Build configuration list for PBXNativeTarget "KMNineBoxDemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB61EDFA1DC3274C00A6DC67 /* Debug */,
+				BB61EDFB1DC3274C00A6DC67 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		BB61EDFC1DC3274C00A6DC67 /* Build configuration list for PBXNativeTarget "KMNineBoxDemoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB61EDFD1DC3274C00A6DC67 /* Debug */,
+				BB61EDFE1DC3274C00A6DC67 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BB61EDC11DC3274C00A6DC67 /* Project object */;
+}
