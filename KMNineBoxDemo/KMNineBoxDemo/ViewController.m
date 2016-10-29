@@ -6,7 +6,7 @@
 //  Copyright © 2016年 周祺华. All rights reserved.
 //
 
-#define kPassSeq  @"123698745"
+#define kPassSeq  @"123654789"
 
 #import "ViewController.h"
 #import "KMNineBoxView.h"
@@ -26,16 +26,6 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     [self pressReloadBtn:nil];
-//    CAShapeLayer *line = [CAShapeLayer layer];
-//    UIBezierPath *linePath = [UIBezierPath bezierPath];
-//    [linePath moveToPoint: CGPointMake(10, 400)];
-//    [linePath addLineToPoint: CGPointMake(200, 400)];
-//    line.path = linePath.CGPath;
-//    line.fillColor = [UIColor blueColor].CGColor;
-//    line.strokeColor = [UIColor blueColor].CGColor;;
-//    line.lineWidth = 2.0f;
-//    
-//    [self.view.layer addSublayer:line];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -72,13 +62,13 @@
         self.nineBoxView = nil;
     }
     
-    self.nineBoxView = [[KMNineBoxView alloc] initWithFrame:CGRectMake(0, 200, kSCREEN_WIDTH, kSCREEN_WIDTH)];
+    self.nineBoxView = [[KMNineBoxView alloc] initWithFrame:CGRectMake(0, 0, kSCREEN_WIDTH, kSCREEN_WIDTH)];
     self.nineBoxView.delegate = self;
     self.nineBoxView.predefinedPassSeq = kPassSeq;
 
     [self.view addSubview:self.nineBoxView];
     
-    self.nineBoxView.frame = CGRectMake(0, 0, kSCREEN_WIDTH, kSCREEN_WIDTH);
+    self.nineBoxView.frame = CGRectMake(0, 300, 320, 320);
     self.nineBoxView.center = self.view.center;
 }
 

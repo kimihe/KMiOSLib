@@ -56,30 +56,20 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     CGFloat _selfFrameY;
     CGFloat _selfFrameWidth;
     CGFloat _selfFrameHeight;
-    CGFloat _selfFrameSquareWidth;      //!< 如果frame不是正方形，则取短边构造内置正方形
+    CGFloat _selfFrameSquareWidth;          //!< 如果frame不是正方形，则取短边构造内置正方形
     
-    CGFloat _unitLength;                //!< 计算所需的单位长度，为KMNineBoxView幕宽度的八分之一
-    CGFloat _marginWidth;               //!< 页边距
-    CGFloat _boxWidth;                  //!< 九宫格实际正方形底的边长，为页边距地两倍
-    CGFloat _circleRadius;              //!< 圆的半径，为0.7单位长度
+    CGFloat _unitLength;                    //!< 计算所需的单位长度，为KMNineBoxView幕宽度的八分之一
+    CGFloat _marginWidth;                   //!< 页边距
+    CGFloat _boxWidth;                      //!< 九宫格实际正方形底的边长，为页边距地两倍
+    CGFloat _circleRadius;                  //!< 圆的半径，为0.7单位长度
     
-    CGPoint _boxCneter1;
-    CGPoint _boxCneter2;
-    CGPoint _boxCneter3;
-    CGPoint _boxCneter4;
-    CGPoint _boxCneter5;
-    CGPoint _boxCneter6;
-    CGPoint _boxCneter7;
-    CGPoint _boxCneter8;
-    CGPoint _boxCneter9;
-    
-
-    NSArray *_nineCirclesArr;               //!< 保存9个circleLayer的数组，继initWithFrame后就长期保存直到view销毁
-    NSMutableArray *_sequenceArr;           //!< 保存九宫格序列的数组
+    NSMutableArray *_nineCirclesArr;        //!< 保存9个circleLayer的数组会随frame变化
+    NSArray *_boxCentersArr;                //!< 保存9个中心点的位置，会随frame变化
+    NSMutableArray *_sequenceArr;           //!< 保存九宫格序列的数组，会随触摸手势变化
     KMNineBoxState _nineBoxState;           //!< 九宫格底状态，主要关注普通和失败两种状态
     
     //连线相关
-    NSMutableArray *_connectionLinesArr;    //!< 保存连线的数组
+    NSMutableArray *_connectionLinesArr;    //!< 保存连线的数组，会随触摸手势变化
     CGPoint _currentBoxCenter;              //!< 现在这个中心点
     CGPoint _previousBoxCenter;             //!< 之前那个中心点
 }
@@ -101,6 +91,7 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     self.backgroundColor = [UIColor grayColor];
 #endif
     
+    _nineCirclesArr = [NSMutableArray arrayWithCapacity:9];
     _sequenceArr = [NSMutableArray arrayWithCapacity:9];// 9个点最多序列长度为9
     _connectionLinesArr = [NSMutableArray arrayWithCapacity:8];// 9个点最多也就8根线
     self.predefinedPassSeq = @"#########";
@@ -122,15 +113,25 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     _boxWidth = _unitLength *2;
     _circleRadius = _unitLength *0.7;
     
-    _boxCneter1 = CGPointMake(_unitLength+_unitLength *1, _unitLength+_unitLength *1);
-    _boxCneter2 = CGPointMake(_unitLength+_unitLength *3, _unitLength+_unitLength *1);
-    _boxCneter3 = CGPointMake(_unitLength+_unitLength *5, _unitLength+_unitLength *1);
-    _boxCneter4 = CGPointMake(_unitLength+_unitLength *1, _unitLength+_unitLength *3);
-    _boxCneter5 = CGPointMake(_unitLength+_unitLength *3, _unitLength+_unitLength *3);
-    _boxCneter6 = CGPointMake(_unitLength+_unitLength *5, _unitLength+_unitLength *3);
-    _boxCneter7 = CGPointMake(_unitLength+_unitLength *1, _unitLength+_unitLength *5);
-    _boxCneter8 = CGPointMake(_unitLength+_unitLength *3, _unitLength+_unitLength *5);
-    _boxCneter9 = CGPointMake(_unitLength+_unitLength *5, _unitLength+_unitLength *5);
+    CGPoint boxCneter1 = CGPointMake(_unitLength+_unitLength *1, _unitLength+_unitLength *1);
+    CGPoint boxCneter2 = CGPointMake(_unitLength+_unitLength *3, _unitLength+_unitLength *1);
+    CGPoint boxCneter3 = CGPointMake(_unitLength+_unitLength *5, _unitLength+_unitLength *1);
+    CGPoint boxCneter4 = CGPointMake(_unitLength+_unitLength *1, _unitLength+_unitLength *3);
+    CGPoint boxCneter5 = CGPointMake(_unitLength+_unitLength *3, _unitLength+_unitLength *3);
+    CGPoint boxCneter6 = CGPointMake(_unitLength+_unitLength *5, _unitLength+_unitLength *3);
+    CGPoint boxCneter7 = CGPointMake(_unitLength+_unitLength *1, _unitLength+_unitLength *5);
+    CGPoint boxCneter8 = CGPointMake(_unitLength+_unitLength *3, _unitLength+_unitLength *5);
+    CGPoint boxCneter9 = CGPointMake(_unitLength+_unitLength *5, _unitLength+_unitLength *5);
+    _boxCentersArr = @[[NSValue valueWithCGPoint:boxCneter1],
+                               [NSValue valueWithCGPoint:boxCneter2],
+                               [NSValue valueWithCGPoint:boxCneter3],
+                               [NSValue valueWithCGPoint:boxCneter4],
+                               [NSValue valueWithCGPoint:boxCneter5],
+                               [NSValue valueWithCGPoint:boxCneter6],
+                               [NSValue valueWithCGPoint:boxCneter7],
+                               [NSValue valueWithCGPoint:boxCneter8],
+                               [NSValue valueWithCGPoint:boxCneter9]
+                               ];
 }
 
 - (void)layoutSubviews
@@ -166,31 +167,13 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
         self.layer.sublayers = nil;
     }
     
-    // 粗暴易懂的绘制
-    NSDictionary *circleLayerDic1 = [self drawCircleAtPoint:_boxCneter1 withRadius:_circleRadius];
-    NSDictionary *circleLayerDic2 = [self drawCircleAtPoint:_boxCneter2 withRadius:_circleRadius];
-    NSDictionary *circleLayerDic3 = [self drawCircleAtPoint:_boxCneter3 withRadius:_circleRadius];
-    NSDictionary *circleLayerDic4 = [self drawCircleAtPoint:_boxCneter4 withRadius:_circleRadius];
-    NSDictionary *circleLayerDic5 = [self drawCircleAtPoint:_boxCneter5 withRadius:_circleRadius];
-    NSDictionary *circleLayerDic6 = [self drawCircleAtPoint:_boxCneter6 withRadius:_circleRadius];
-    NSDictionary *circleLayerDic7 = [self drawCircleAtPoint:_boxCneter7 withRadius:_circleRadius];
-    NSDictionary *circleLayerDic8 = [self drawCircleAtPoint:_boxCneter8 withRadius:_circleRadius];
-    NSDictionary *circleLayerDic9 = [self drawCircleAtPoint:_boxCneter9 withRadius:_circleRadius];
-    
-    
-    _nineCirclesArr = @[circleLayerDic1,
-                        circleLayerDic2,
-                        circleLayerDic3,
-                        circleLayerDic4,
-                        circleLayerDic5,
-                        circleLayerDic6,
-                        circleLayerDic7,
-                        circleLayerDic8,
-                        circleLayerDic9];
-    
-    for (NSDictionary *aDic in _nineCirclesArr) {
-        CAShapeLayer *circleLayer = [aDic objectForKey:kCircleLayer];
-        CAShapeLayer *pointLayer = [aDic objectForKey:kPointLayer];
+    for (NSValue *aValue in _boxCentersArr) {
+        CGPoint aBoxCenter = [aValue CGPointValue];
+        NSMutableDictionary *aCircleLayerDic = [self drawCircleAtPoint:aBoxCenter withRadius:_circleRadius];
+        [_nineCirclesArr addObject:aCircleLayerDic];
+        
+        CAShapeLayer *circleLayer = [aCircleLayerDic objectForKey:kCircleLayer];
+        CAShapeLayer *pointLayer = [aCircleLayerDic objectForKey:kPointLayer];
         [self.layer addSublayer:circleLayer];
         [self.layer addSublayer:pointLayer];
     }
@@ -199,26 +182,47 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
 - (void)reloadNineBox
 {
     // need improve
-    return;
+//    return;
     // reload sublayers 只需要调整位置
     // 千万不能改变大小，调整层级，或者增删层级！
     // 千万不能改变大小，调整层级，或者增删层级！
     // 千万不能改变大小，调整层级，或者增删层级！
     // 重要的事说三遍
+    
     if ([_nineCirclesArr count] != 9) {
         return;
     }
     
-    for (NSDictionary *aDic in _nineCirclesArr) {
+    for (int i = 0; i < [_nineCirclesArr count]; i++) {
+        NSDictionary *aDic = _nineCirclesArr[i];
         CAShapeLayer *circleLayer = [aDic objectForKey:kCircleLayer];
         CAShapeLayer *pointLayer = [aDic objectForKey:kPointLayer];
-        CGPoint boxCenter = [[aDic objectForKey:kBoxCenter] CGPointValue];
         
-        circleLayer.anchorPoint = CGPointMake(0.5, 0.5);
-        pointLayer.anchorPoint = CGPointMake(0.5, 0.5);
+        CGPoint boxCenter = [_boxCentersArr[i] CGPointValue];
+        // 这里及时重设字典中圆心位置的信息
+        [_nineCirclesArr[i] setObject:[NSValue valueWithCGPoint:boxCenter] forKey:kBoxCenter];
         
-        circleLayer.position = boxCenter;
-        pointLayer.position = boxCenter;
+        
+        
+        // 画圆圈
+        CGRect frameCircle = CGRectMake(boxCenter.x-_circleRadius, boxCenter.y-_circleRadius, _circleRadius *2, _circleRadius *2);
+        //create a path: 矩形内切圆
+        UIBezierPath *bezierPathCircle = [UIBezierPath bezierPathWithOvalInRect:frameCircle];
+        //draw the path using a CAShapeLayer
+        circleLayer.path = bezierPathCircle.CGPath;
+        
+        
+        // 画中心的圆点
+        CGRect framePoint = CGRectMake(boxCenter.x-_circleRadius/4, boxCenter.y-_circleRadius/4, _circleRadius /4*2, _circleRadius /4*2);
+        //create a path: 矩形内切圆
+        UIBezierPath *bezierPathPoint = [UIBezierPath bezierPathWithOvalInRect:framePoint];
+        //draw the path using a CAShapeLayer
+        pointLayer.path = bezierPathPoint.CGPath;
+        
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+        //有点迷，这里的position
+//        circleLayer.position = CGPointMake(2, 2);
+//////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 
 }
@@ -235,7 +239,7 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     [_connectionLinesArr removeAllObjects];
 }
 
-- (NSDictionary *)drawCircleAtPoint:(CGPoint)center withRadius:(CGFloat)radius
+- (NSMutableDictionary *)drawCircleAtPoint:(CGPoint)center withRadius:(CGFloat)radius
 {
     // 画圆圈
     CGRect frameCircle = CGRectMake(center.x-_circleRadius, center.y-_circleRadius, _circleRadius *2, _circleRadius *2);
@@ -255,6 +259,7 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     //draw the path using a CAShapeLayer
     CAShapeLayer *pointLayer = [CAShapeLayer layer];
     pointLayer.path = bezierPathPoint.CGPath;
+    
 #if USE_DEBUG
     pointLayer.fillColor = [UIColor greenColor].CGColor;
     pointLayer.strokeColor = [UIColor greenColor].CGColor;
@@ -268,11 +273,10 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     NSValue *boxCenter = [NSValue valueWithCGPoint:center];
     
     //保存圆圈，圆点和圆心位置
-    NSDictionary *circleLayerDic = @{
-                                     kCircleLayer : circleLayer,
-                                     kPointLayer  : pointLayer,
-                                     kBoxCenter   : boxCenter
-                                     };
+    NSMutableDictionary *circleLayerDic = [NSMutableDictionary dictionary];
+    [circleLayerDic setObject:circleLayer forKey:kCircleLayer];
+    [circleLayerDic setObject:pointLayer forKey:kPointLayer];
+    [circleLayerDic setObject:boxCenter forKey:kBoxCenter];
     
     return circleLayerDic;
 }
@@ -367,6 +371,7 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     
     NSString *checkStr = [NSString stringWithFormat:@"%ld", circleIndex+1];//加1
     if (![self checkString:checkStr isInArray:_sequenceArr]) {
+        // 不允许重复添加
         [_sequenceArr addObject:checkStr];
     }
     
@@ -388,12 +393,11 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
         CGPoint previousBoxCenter = [[previousCircleLayerDic objectForKey:kBoxCenter] CGPointValue];
         
         // 新的两点连线，才继续画
-        if ([KMMathHelper point1:currentBoxCenter EqualToPoint2:_currentBoxCenter]) {
+        if ([KMMathHelper point1:currentBoxCenter EqualToPoint2:_currentBoxCenter] &&
+            [KMMathHelper point1:previousBoxCenter EqualToPoint2:_previousBoxCenter]) {
             return;
         }
-        if ([KMMathHelper point1:previousBoxCenter EqualToPoint2:_previousBoxCenter]) {
-            return;
-        }
+    
         // 保存最近的两个点
         _currentBoxCenter = currentBoxCenter;
         _previousBoxCenter = previousBoxCenter;
@@ -420,31 +424,18 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
 - (KMNineBoxIndex)checkLocationWithTouchPoint:(CGPoint)touchPoint
 {
     // 此处可以优化
-    double d1 = [KMMathHelper getDistanceBetweenPoint1:touchPoint point2:_boxCneter1];
-    double d2 = [KMMathHelper getDistanceBetweenPoint1:touchPoint point2:_boxCneter2];
-    double d3 = [KMMathHelper getDistanceBetweenPoint1:touchPoint point2:_boxCneter3];
-    double d4 = [KMMathHelper getDistanceBetweenPoint1:touchPoint point2:_boxCneter4];
-    double d5 = [KMMathHelper getDistanceBetweenPoint1:touchPoint point2:_boxCneter5];
-    double d6 = [KMMathHelper getDistanceBetweenPoint1:touchPoint point2:_boxCneter6];
-    double d7 = [KMMathHelper getDistanceBetweenPoint1:touchPoint point2:_boxCneter7];
-    double d8 = [KMMathHelper getDistanceBetweenPoint1:touchPoint point2:_boxCneter8];
-    double d9 = [KMMathHelper getDistanceBetweenPoint1:touchPoint point2:_boxCneter9];
+    NSMutableArray *distanceArr = [NSMutableArray arrayWithCapacity:9];
+    for (int i = 0; i < [_nineCirclesArr count]; i++) {
+        NSDictionary *aDic = _nineCirclesArr[i];
+        CGPoint aBoxCenter = [[aDic objectForKey:kBoxCenter] CGPointValue];
+        double distance = [KMMathHelper getDistanceBetweenPoint1:touchPoint point2:aBoxCenter];
+        [distanceArr addObject:[NSNumber numberWithDouble:distance]];
+    }
     
-    NSArray *arr = @[[NSNumber numberWithDouble:d1],
-                     [NSNumber numberWithDouble:d2],
-                     [NSNumber numberWithDouble:d3],
-                     [NSNumber numberWithDouble:d4],
-                     [NSNumber numberWithDouble:d5],
-                     [NSNumber numberWithDouble:d6],
-                     [NSNumber numberWithDouble:d7],
-                     [NSNumber numberWithDouble:d8],
-                     [NSNumber numberWithDouble:d9]
-                     ];
-    
-    double minD = d1; // 最短的距离
+    double minD = [distanceArr[0] doubleValue]; // 最短的距离
     int index = 0;    // 最短距离对应的序号
-    for (int i = 0; i<9; i++) {
-        double d = [arr[i] doubleValue];
+    for (int i = 0; i<[distanceArr count]; i++) {
+        double d = [distanceArr[i] doubleValue];
         if (d < minD) {
             minD = d;
             index = i;
@@ -498,10 +489,6 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
 //    CGPoint point = [[touches anyObject] locationInView:self];
 //    NSLog(@"ended point: (%f,%f)", point.x, point.y);
     
-    
-    
-    
-    
     NSString *sequenceStr = @"";
     for (int i = 0; i < [_sequenceArr count]; i++) {
         NSString *tmp = [NSString stringWithFormat:@"%@", _sequenceArr[i]];
@@ -527,9 +514,5 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
         [self resetNineBox];
     });
 }
-
-
-
-
 
 @end
