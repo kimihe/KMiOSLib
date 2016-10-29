@@ -61,4 +61,14 @@
  *  @return 斜率(以点1->点2为正方向)，可能会因斜率无限大返回NAN，NAN请用isnan(k)来判断
  */
 +(double)getGradientFromPoint1:(CGPoint)point1 point2:(CGPoint)point2;
+
+/**
+ *  判断两个CGPoint是否相同
+ *
+ *  @param point1 点1
+ *  @param point2 点2
+ *
+ *  @return 相同返回YES，不同返回NO
+ */
++ (BOOL)point1:(CGPoint)point1 EqualToPoint2:(CGPoint)point2;
 @end

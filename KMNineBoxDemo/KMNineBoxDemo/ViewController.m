@@ -6,7 +6,7 @@
 //  Copyright © 2016年 周祺华. All rights reserved.
 //
 
-#define kPassSeq  @"123654789"
+#define kPassSeq  @"123698745"
 
 #import "ViewController.h"
 #import "KMNineBoxView.h"
@@ -26,6 +26,16 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     [self pressReloadBtn:nil];
+//    CAShapeLayer *line = [CAShapeLayer layer];
+//    UIBezierPath *linePath = [UIBezierPath bezierPath];
+//    [linePath moveToPoint: CGPointMake(10, 400)];
+//    [linePath addLineToPoint: CGPointMake(200, 400)];
+//    line.path = linePath.CGPath;
+//    line.fillColor = [UIColor blueColor].CGColor;
+//    line.strokeColor = [UIColor blueColor].CGColor;;
+//    line.lineWidth = 2.0f;
+//    
+//    [self.view.layer addSublayer:line];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -39,14 +49,14 @@
         case KMNineBoxStatePassed: {
             self.titlelabel.text = @"Passed!";
             self.titlelabel.textColor = [UIColor greenColor];
-            self.passSeqLabel.text = [NSString stringWithFormat:@"Seq: %@", passSequence];
+            self.passSeqLabel.text = [NSString stringWithFormat:@"Steps: %@", passSequence];
             break;
         }
             
         case KMNineBoxStateFailed: {
             self.titlelabel.text = @"Incorrect!";
             self.titlelabel.textColor = [UIColor redColor];
-            self.passSeqLabel.text = [NSString stringWithFormat:@"Seq: %@", passSequence];
+            self.passSeqLabel.text = [NSString stringWithFormat:@"Steps: %@", passSequence];
             break;
         }
             
@@ -62,7 +72,7 @@
         self.nineBoxView = nil;
     }
     
-    self.nineBoxView = [[KMNineBoxView alloc] initWithFrame:CGRectMake(0, 200, 200, 200)];
+    self.nineBoxView = [[KMNineBoxView alloc] initWithFrame:CGRectMake(0, 200, kSCREEN_WIDTH, kSCREEN_WIDTH)];
     self.nineBoxView.delegate = self;
     self.nineBoxView.predefinedPassSeq = kPassSeq;
 

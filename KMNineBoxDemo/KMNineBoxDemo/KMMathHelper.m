@@ -59,4 +59,12 @@
     }
 }
 
++ (BOOL)point1:(CGPoint)point1 EqualToPoint2:(CGPoint)point2
+{
+    if (point1.x==point2.x && point1.y==point2.y) {
+        return YES;
+    }
+    return NO;
+}
+
 @end

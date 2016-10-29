@@ -6,23 +6,24 @@
 //  Copyright © 2016年 周祺华. All rights reserved.
 //
 
-#define USE_DEBUG 1
+#define USE_DEBUG 0
 #define USE_DRAWRECT 0
 
-#define kCircleStrokeColorNormal  colorFromRGBA(0x89CFF0, 1.0).CGColor
-#define kCircleStrokeColorTouched colorFromRGBA(0xAACFFF, 1.0).CGColor
-#define kCircleStorkeColorInvalid [UIColor                redColor].CGColor
+#define kCircleStrokeColorNormal  colorFromRGBA(0x89CFF0,   1.0).CGColor
+#define kCircleStrokeColorTouched colorFromRGBA(0xAACFFF,   1.0).CGColor
+#define kCircleStorkeColorInvalid [UIColor                  redColor].CGColor
 
-#define kCircleLineWidthNormal                            1.0f
-#define kCircleLineWidthTouched                           2.0f
-#define kCircleLineWidthInvalid                           1.0f
+#define kCircleLineWidthNormal                              1.0f
+#define kCircleLineWidthTouched                             2.0f
+#define kCircleLineWidthInvalid                             1.0f
 
-#define kPointFillColorNormal  [UIColor                   clearColor].CGColor
-#define kPointFillColorTouched colorFromRGBA(0xAACFFF,    1.0).CGColor
-#define kPointFillColorInvalid [UIColor                   redColor].CGColor
+#define kPointFillColorNormal  [UIColor                     clearColor].CGColor
+#define kPointFillColorTouched colorFromRGBA(0xAACFFF,      1.0).CGColor
+#define kPointFillColorInvalid [UIColor                     redColor].CGColor
 
-#define kConnectionLineColor colorFromRGBA(0xAACFFF,      1.0).CGColor
-#define kConnectionLineWidth                              1.0f
+#define kConnectionLineColorTouched colorFromRGBA(0xAACFFF, 1.0).CGColor
+#define kConnectionLineColorInvalid [UIColor                redColor].CGColor
+#define kConnectionLineWidth                                3.0f
 
 #define kCircleLayer @"circleLayer"
 #define kPointLayer  @"pointLayer"
@@ -73,9 +74,14 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     CGPoint _boxCneter9;
     
 
-    NSArray *_nineCirclesArr;           //!< 保存9个circleLayer的数组
-    NSMutableArray *_sequenceArr;       //!< 保存九宫格序列的数组
-    KMNineBoxState _nineBoxState;       //!< 九宫格底状态，主要关注验证成功和失败两种状态ç
+    NSArray *_nineCirclesArr;               //!< 保存9个circleLayer的数组，继initWithFrame后就长期保存直到view销毁
+    NSMutableArray *_sequenceArr;           //!< 保存九宫格序列的数组
+    KMNineBoxState _nineBoxState;           //!< 九宫格底状态，主要关注普通和失败两种状态
+    
+    //连线相关
+    NSMutableArray *_connectionLinesArr;    //!< 保存连线的数组
+    CGPoint _currentBoxCenter;              //!< 现在这个中心点
+    CGPoint _previousBoxCenter;             //!< 之前那个中心点
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -95,7 +101,8 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     self.backgroundColor = [UIColor grayColor];
 #endif
     
-    _sequenceArr = [NSMutableArray arrayWithCapacity:9];
+    _sequenceArr = [NSMutableArray arrayWithCapacity:9];// 9个点最多序列长度为9
+    _connectionLinesArr = [NSMutableArray arrayWithCapacity:8];// 9个点最多也就8根线
     self.predefinedPassSeq = @"#########";
 }
 
@@ -154,10 +161,7 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
 #pragma mark -  Set Nine Box
 - (void)drawNineBox
 {
-//    for (CAShapeLayer *aCircleLayer in self.layer.sublayers) {
-//        [aCircleLayer removeFromSuperlayer];
-//    }
-    
+    // 消除一切sublayer
     if ([self.layer.sublayers count] > 0) {
         self.layer.sublayers = nil;
     }
@@ -194,69 +198,41 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
 
 - (void)reloadNineBox
 {
-    self.layer.sublayers = nil;
-    [self drawNineBox];
+    // need improve
+    return;
+    // reload sublayers 只需要调整位置
+    // 千万不能改变大小，调整层级，或者增删层级！
+    // 千万不能改变大小，调整层级，或者增删层级！
+    // 千万不能改变大小，调整层级，或者增删层级！
+    // 重要的事说三遍
+    if ([_nineCirclesArr count] != 9) {
+        return;
+    }
+    
+    for (NSDictionary *aDic in _nineCirclesArr) {
+        CAShapeLayer *circleLayer = [aDic objectForKey:kCircleLayer];
+        CAShapeLayer *pointLayer = [aDic objectForKey:kPointLayer];
+        CGPoint boxCenter = [[aDic objectForKey:kBoxCenter] CGPointValue];
+        
+        circleLayer.anchorPoint = CGPointMake(0.5, 0.5);
+        pointLayer.anchorPoint = CGPointMake(0.5, 0.5);
+        
+        circleLayer.position = boxCenter;
+        pointLayer.position = boxCenter;
+    }
+
 }
 
 - (void)resetNineBox
 {
+    // 恢复响应用户手势
     self.userInteractionEnabled = YES;
-    [_sequenceArr removeAllObjects];
-    [self setNineBoxState:KMNineBoxStateNormal];
-}
-
-- (void)setNineBoxState:(KMNineBoxState)nineBoxState
-{
-    _nineBoxState = nineBoxState;
     
-    switch (nineBoxState) {
-        case KMNineBoxStateNormal: {
-            for (NSDictionary *aDic in _nineCirclesArr) {
-                CAShapeLayer *circleLayer = [aDic objectForKey:kCircleLayer];
-                CAShapeLayer *pointLayer = [aDic objectForKey:kPointLayer];
-                
-                circleLayer.strokeColor = kCircleStrokeColorNormal;
-                circleLayer.lineWidth = kCircleLineWidthNormal;
-                
-                pointLayer.fillColor = kPointFillColorNormal;
-                pointLayer.strokeColor = kPointFillColorNormal;
-            }
-            
-            break;
-        }
-            
-        case KMNineBoxStateTouched: {
-            
-            break;
-        }
-            
-        case KMNineBoxStatePassed: {
-            
-            break;
-        }
-            
-        case KMNineBoxStateFailed: {
-            for (int i = 0; i < [_sequenceArr count]; i++) {
-                // 取出序列的每一个单步
-                NSInteger circleIndex = [_sequenceArr[i] integerValue] -1;
-                // 找出对应的circleLayerDic
-                NSDictionary *aDic = _nineCirclesArr[circleIndex];
-                CAShapeLayer *circleLayer = [aDic objectForKey:kCircleLayer];
-                CAShapeLayer *pointLayer = [aDic objectForKey:kPointLayer];
-                
-                circleLayer.strokeColor = kCircleStorkeColorInvalid;
-                circleLayer.lineWidth = kCircleLineWidthInvalid;
-                
-                pointLayer.fillColor = kPointFillColorInvalid;
-                pointLayer.strokeColor = kPointFillColorInvalid;
-            }
-        
-            break;
-        }
-            
-        default:
-            break;
-    }
+    [self setNineBoxState:KMNineBoxStateNormal];
+    
+    // 上一步设置完普通状态后，再销毁这两个数组
+    [_sequenceArr removeAllObjects];
+    [_connectionLinesArr removeAllObjects];
 }
 
 - (NSDictionary *)drawCircleAtPoint:(CGPoint)center withRadius:(CGFloat)radius
@@ -301,6 +277,75 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     return circleLayerDic;
 }
 
+- (void)setNineBoxState:(KMNineBoxState)nineBoxState
+{
+    _nineBoxState = nineBoxState;
+    
+    switch (nineBoxState) {
+        case KMNineBoxStateNormal: {
+            // 设置9个圆圈为普通状态
+            for (NSDictionary *aDic in _nineCirclesArr) {
+                CAShapeLayer *circleLayer = [aDic objectForKey:kCircleLayer];
+                CAShapeLayer *pointLayer = [aDic objectForKey:kPointLayer];
+                
+                circleLayer.strokeColor = kCircleStrokeColorNormal;
+                circleLayer.lineWidth = kCircleLineWidthNormal;
+                
+                pointLayer.fillColor = kPointFillColorNormal;
+                pointLayer.strokeColor = kPointFillColorNormal;
+            }
+            
+            //消除红色连线
+            for (int i = 0; i < [_connectionLinesArr count]; i++) {
+                CAShapeLayer *aLinelayer = _connectionLinesArr[i];
+                [aLinelayer removeFromSuperlayer];
+            }
+            
+            break;
+        }
+            
+        case KMNineBoxStateTouched: {
+            
+            break;
+        }
+            
+        case KMNineBoxStatePassed: {
+            
+            break;
+        }
+            
+        case KMNineBoxStateFailed: {
+            // 设置触摸过的圆圈为红色
+            for (int i = 0; i < [_sequenceArr count]; i++) {
+                // 取出序列的每一个单步
+                NSInteger circleIndex = [_sequenceArr[i] integerValue] -1; // 减1
+                // 找出对应的circleLayerDic
+                NSDictionary *aDic = _nineCirclesArr[circleIndex];
+                CAShapeLayer *circleLayer = [aDic objectForKey:kCircleLayer];
+                CAShapeLayer *pointLayer = [aDic objectForKey:kPointLayer];
+                
+                circleLayer.strokeColor = kCircleStorkeColorInvalid;
+                circleLayer.lineWidth = kCircleLineWidthInvalid;
+                
+                pointLayer.fillColor = kPointFillColorInvalid;
+                pointLayer.strokeColor = kPointFillColorInvalid;
+            }
+            
+            //设置连线为红色
+            for (int i = 0; i < [_connectionLinesArr count]; i++) {
+                CAShapeLayer *aLinelayer = _connectionLinesArr[i];
+                aLinelayer.fillColor = kConnectionLineColorInvalid;
+                aLinelayer.strokeColor = kConnectionLineColorInvalid;
+            }
+            
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
 - (void)decorateCircleWithBoxIndex:(KMNineBoxIndex)index
 {
     if (index == KMNineBoxIndexNone) {
@@ -320,7 +365,7 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     pointLayer.fillColor = kPointFillColorTouched;
     pointLayer.strokeColor = kPointFillColorTouched;
     
-    NSString *checkStr = [NSString stringWithFormat:@"%ld", circleIndex+1];
+    NSString *checkStr = [NSString stringWithFormat:@"%ld", circleIndex+1];//加1
     if (![self checkString:checkStr isInArray:_sequenceArr]) {
         [_sequenceArr addObject:checkStr];
     }
@@ -333,8 +378,8 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     NSInteger count = [_sequenceArr count];
     if (count > 1) {
         // 只有一个圆被触摸的时候不用画连接线
-        NSInteger currentIndex = [[_sequenceArr lastObject] integerValue];
-        NSInteger previousIndex = [[_sequenceArr objectAtIndex:(count-2)] integerValue];
+        NSInteger currentIndex = [[_sequenceArr lastObject] integerValue]-1;//减1
+        NSInteger previousIndex = [[_sequenceArr objectAtIndex:(count-2)] integerValue]-1;//减1
         
         NSDictionary *currentCircleLayerDic = _nineCirclesArr[currentIndex];
         NSDictionary *previousCircleLayerDic = _nineCirclesArr[previousIndex];
@@ -342,17 +387,32 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
         CGPoint currentBoxCenter = [[currentCircleLayerDic objectForKey:kBoxCenter] CGPointValue];
         CGPoint previousBoxCenter = [[previousCircleLayerDic objectForKey:kBoxCenter] CGPointValue];
         
-        CAShapeLayer *line = [CAShapeLayer layer];
+        // 新的两点连线，才继续画
+        if ([KMMathHelper point1:currentBoxCenter EqualToPoint2:_currentBoxCenter]) {
+            return;
+        }
+        if ([KMMathHelper point1:previousBoxCenter EqualToPoint2:_previousBoxCenter]) {
+            return;
+        }
+        // 保存最近的两个点
+        _currentBoxCenter = currentBoxCenter;
+        _previousBoxCenter = previousBoxCenter;
+        
+        
+        
+        // 画线
+        CAShapeLayer *lineLayer = [CAShapeLayer layer];
         UIBezierPath *linePath = [UIBezierPath bezierPath];
         [linePath moveToPoint: previousBoxCenter];
         [linePath addLineToPoint: currentBoxCenter];
-        line.path = linePath.CGPath;
-        line.fillColor = kConnectionLineColor;
-        line.opacity = 1.0;
-        line.strokeColor = kConnectionLineColor;
-        line.lineWidth = kConnectionLineWidth;
+        lineLayer.path = linePath.CGPath;
+        lineLayer.fillColor = kConnectionLineColorTouched;
+        lineLayer.strokeColor = kConnectionLineColorTouched;
+        lineLayer.lineWidth = kConnectionLineWidth;
         
-//        [self.layer addSublayer:line];
+        [self.layer addSublayer:lineLayer];
+        
+        [_connectionLinesArr addObject:lineLayer];
     }
 }
 
@@ -438,6 +498,10 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
 //    CGPoint point = [[touches anyObject] locationInView:self];
 //    NSLog(@"ended point: (%f,%f)", point.x, point.y);
     
+    
+    
+    
+    
     NSString *sequenceStr = @"";
     for (int i = 0; i < [_sequenceArr count]; i++) {
         NSString *tmp = [NSString stringWithFormat:@"%@", _sequenceArr[i]];
@@ -456,7 +520,7 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     
     // 再重置前不再响应用户触摸
     self.userInteractionEnabled = NO;
-    
+
     //延迟1秒再重置
     dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
     dispatch_after(delay, dispatch_get_main_queue(), ^(void){

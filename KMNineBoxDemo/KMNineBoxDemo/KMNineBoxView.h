@@ -25,8 +25,6 @@ typedef NS_ENUM(NSInteger, KMNineBoxState) {
 @interface KMNineBoxView : UIView
 
 @property (weak, nonatomic  ) id <KMNineBoxViewDelegate> delegate;
-//@property (strong, nonatomic) UIColor               *circleStrokeColor;
-//@property (assign, nonatomic) KMNineBoxState        nineBoxState;
 @property (strong, nonatomic) NSString *predefinedPassSeq;
 
 - (instancetype)initWithFrame:(CGRect)frame;
