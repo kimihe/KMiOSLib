@@ -68,21 +68,10 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     CGPoint _boxCneter8;
     CGPoint _boxCneter9;
     
-    NSDictionary *_circleLayerDic1;
-    NSDictionary *_circleLayerDic2;
-    NSDictionary *_circleLayerDic3;
-    NSDictionary *_circleLayerDic4;
-    NSDictionary *_circleLayerDic5;
-    NSDictionary *_circleLayerDic6;
-    NSDictionary *_circleLayerDic7;
-    NSDictionary *_circleLayerDic8;
-    NSDictionary *_circleLayerDic9;
+
     NSArray *_nineCirclesArr;           //!< 保存9个circleLayer的数组
-    
-    
     NSMutableArray *_sequenceArr;       //!< 保存九宫格序列的数组
-    NSInteger _stepCount;
-    KMNineBoxState _nineBoxState;
+    KMNineBoxState _nineBoxState;       //!< 九宫格底状态，主要关注验证成功和失败两种状态ç
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -170,26 +159,26 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     }
     
     // 粗暴易懂的绘制
-    _circleLayerDic1 = [self drawCircleAtPoint:_boxCneter1 withRadius:_circleRadius];
-    _circleLayerDic2 = [self drawCircleAtPoint:_boxCneter2 withRadius:_circleRadius];
-    _circleLayerDic3 = [self drawCircleAtPoint:_boxCneter3 withRadius:_circleRadius];
-    _circleLayerDic4 = [self drawCircleAtPoint:_boxCneter4 withRadius:_circleRadius];
-    _circleLayerDic5 = [self drawCircleAtPoint:_boxCneter5 withRadius:_circleRadius];
-    _circleLayerDic6 = [self drawCircleAtPoint:_boxCneter6 withRadius:_circleRadius];
-    _circleLayerDic7 = [self drawCircleAtPoint:_boxCneter7 withRadius:_circleRadius];
-    _circleLayerDic8 = [self drawCircleAtPoint:_boxCneter8 withRadius:_circleRadius];
-    _circleLayerDic9 = [self drawCircleAtPoint:_boxCneter9 withRadius:_circleRadius];
+    NSDictionary *circleLayerDic1 = [self drawCircleAtPoint:_boxCneter1 withRadius:_circleRadius];
+    NSDictionary *circleLayerDic2 = [self drawCircleAtPoint:_boxCneter2 withRadius:_circleRadius];
+    NSDictionary *circleLayerDic3 = [self drawCircleAtPoint:_boxCneter3 withRadius:_circleRadius];
+    NSDictionary *circleLayerDic4 = [self drawCircleAtPoint:_boxCneter4 withRadius:_circleRadius];
+    NSDictionary *circleLayerDic5 = [self drawCircleAtPoint:_boxCneter5 withRadius:_circleRadius];
+    NSDictionary *circleLayerDic6 = [self drawCircleAtPoint:_boxCneter6 withRadius:_circleRadius];
+    NSDictionary *circleLayerDic7 = [self drawCircleAtPoint:_boxCneter7 withRadius:_circleRadius];
+    NSDictionary *circleLayerDic8 = [self drawCircleAtPoint:_boxCneter8 withRadius:_circleRadius];
+    NSDictionary *circleLayerDic9 = [self drawCircleAtPoint:_boxCneter9 withRadius:_circleRadius];
     
     
-    _nineCirclesArr = @[_circleLayerDic1,
-                        _circleLayerDic2,
-                        _circleLayerDic3,
-                        _circleLayerDic4,
-                        _circleLayerDic5,
-                        _circleLayerDic6,
-                        _circleLayerDic7,
-                        _circleLayerDic8,
-                        _circleLayerDic9];
+    _nineCirclesArr = @[circleLayerDic1,
+                        circleLayerDic2,
+                        circleLayerDic3,
+                        circleLayerDic4,
+                        circleLayerDic5,
+                        circleLayerDic6,
+                        circleLayerDic7,
+                        circleLayerDic8,
+                        circleLayerDic9];
     
     for (NSDictionary *aDic in _nineCirclesArr) {
         CAShapeLayer *circleLayer = [aDic objectForKey:kCircleLayer];
@@ -305,158 +294,26 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
 
 - (void)decorateCircleWithBoxIndex:(KMNineBoxIndex)index
 {
-    switch (index) {
-        case KMNineBoxIndex1: {
-            CAShapeLayer *circleLayer = [_circleLayerDic1 objectForKey:kCircleLayer];
-            CAShapeLayer *pointLayer = [_circleLayerDic1 objectForKey:kPointLayer];
-            
-            circleLayer.strokeColor = kCircleStrokeColorTouched;
-            circleLayer.lineWidth = kCircleLineWidthTouched;
-            
-            pointLayer.fillColor = kPointFillColorTouched;
-            pointLayer.strokeColor = kPointFillColorTouched;
-            
-            if (![self checkString:@"1" isInArray:_sequenceArr]) {
-                [_sequenceArr addObject:@"1"];
-            }
-            
-            break;
-        }
-            
-        case KMNineBoxIndex2: {
-            CAShapeLayer *circleLayer = [_circleLayerDic2 objectForKey:kCircleLayer];
-            CAShapeLayer *pointLayer = [_circleLayerDic2 objectForKey:kPointLayer];
-            
-            circleLayer.strokeColor = kCircleStrokeColorTouched;
-            circleLayer.lineWidth = kCircleLineWidthTouched;
-            
-            pointLayer.fillColor = kPointFillColorTouched;
-            pointLayer.strokeColor = kPointFillColorTouched;
-            
-            if (![self checkString:@"2" isInArray:_sequenceArr]) {
-                [_sequenceArr addObject:@"2"];
-            }
-            
-            break;
-        }
-            
-        case KMNineBoxIndex3: {
-            CAShapeLayer *circleLayer = [_circleLayerDic3 objectForKey:kCircleLayer];
-            CAShapeLayer *pointLayer = [_circleLayerDic3 objectForKey:kPointLayer];
-            
-            circleLayer.strokeColor = kCircleStrokeColorTouched;
-            circleLayer.lineWidth = kCircleLineWidthTouched;
-            
-            pointLayer.fillColor = kPointFillColorTouched;
-            pointLayer.strokeColor = kPointFillColorTouched;
-            
-            if (![self checkString:@"3" isInArray:_sequenceArr]) {
-                [_sequenceArr addObject:@"3"];
-            }
-            
-             break;
-        }
-        
-        case KMNineBoxIndex4: {
-            CAShapeLayer *circleLayer = [_circleLayerDic4 objectForKey:kCircleLayer];
-            CAShapeLayer *pointLayer = [_circleLayerDic4 objectForKey:kPointLayer];
-            
-            circleLayer.strokeColor = kCircleStrokeColorTouched;
-            circleLayer.lineWidth = kCircleLineWidthTouched;
-            
-            pointLayer.fillColor = kPointFillColorTouched;
-            pointLayer.strokeColor = kPointFillColorTouched;
-            
-            if (![self checkString:@"4" isInArray:_sequenceArr]) {
-               [_sequenceArr addObject:@"4"];
-            }
-
-            break;
-        }
-        case KMNineBoxIndex5: {
-            CAShapeLayer *circleLayer = [_circleLayerDic5 objectForKey:kCircleLayer];
-            CAShapeLayer *pointLayer = [_circleLayerDic5 objectForKey:kPointLayer];
-            
-            circleLayer.strokeColor = kCircleStrokeColorTouched;
-            circleLayer.lineWidth = kCircleLineWidthTouched;
-            
-            pointLayer.fillColor = kPointFillColorTouched;
-            pointLayer.strokeColor = kPointFillColorTouched;
-            
-            if (![self checkString:@"5" isInArray:_sequenceArr]) {
-                [_sequenceArr addObject:@"5"];
-                
-            }
-            
-            break;
-        }
-        case KMNineBoxIndex6: {
-            CAShapeLayer *circleLayer = [_circleLayerDic6 objectForKey:kCircleLayer];
-            CAShapeLayer *pointLayer = [_circleLayerDic6 objectForKey:kPointLayer];
-            
-            circleLayer.strokeColor = kCircleStrokeColorTouched;
-            circleLayer.lineWidth = kCircleLineWidthTouched;
-            
-            pointLayer.fillColor = kPointFillColorTouched;
-            pointLayer.strokeColor = kPointFillColorTouched;
-            
-            if (![self checkString:@"6" isInArray:_sequenceArr]) {
-                [_sequenceArr addObject:@"6"];
-            }
-            
-            break;
-        }
-        case KMNineBoxIndex7: {
-            CAShapeLayer *circleLayer = [_circleLayerDic7 objectForKey:kCircleLayer];
-            CAShapeLayer *pointLayer = [_circleLayerDic7 objectForKey:kPointLayer];
-            
-            circleLayer.strokeColor = kCircleStrokeColorTouched;
-            circleLayer.lineWidth = kCircleLineWidthTouched;
-            
-            pointLayer.fillColor = kPointFillColorTouched;
-            pointLayer.strokeColor = kPointFillColorTouched;
-            
-            if (![self checkString:@"7" isInArray:_sequenceArr]) {
-                [_sequenceArr addObject:@"7"];
-            }
-            
-            break;
-        }
-        case KMNineBoxIndex8: {
-            CAShapeLayer *circleLayer = [_circleLayerDic8 objectForKey:kCircleLayer];
-            CAShapeLayer *pointLayer = [_circleLayerDic8 objectForKey:kPointLayer];
-            
-            circleLayer.strokeColor = kCircleStrokeColorTouched;
-            circleLayer.lineWidth = kCircleLineWidthTouched;
-            
-            pointLayer.fillColor = kPointFillColorTouched;
-            pointLayer.strokeColor = kPointFillColorTouched;
-            
-            if (![self checkString:@"8" isInArray:_sequenceArr]) {
-                [_sequenceArr addObject:@"8"];
-            }
-            
-            break;
-        }
-        case KMNineBoxIndex9: {
-            CAShapeLayer *circleLayer = [_circleLayerDic9 objectForKey:kCircleLayer];
-            CAShapeLayer *pointLayer = [_circleLayerDic9 objectForKey:kPointLayer];
-            
-            circleLayer.strokeColor = kCircleStrokeColorTouched;
-            circleLayer.lineWidth = kCircleLineWidthTouched;
-            
-            pointLayer.fillColor = kPointFillColorTouched;
-            pointLayer.strokeColor = kPointFillColorTouched;
-            
-            if (![self checkString:@"9" isInArray:_sequenceArr]) {
-                [_sequenceArr addObject:@"9"];
-            }
-            
-            break;
-        }
-          
-        default:
-            break;
+    if (index == KMNineBoxIndexNone) {
+        return;
+    }
+    
+    NSInteger circleIndex = log2(index);
+//    NSLog(@"circleIndex: %ld", (long)circleIndex);
+    
+    NSDictionary *aDic = _nineCirclesArr[circleIndex];
+    CAShapeLayer *circleLayer = [aDic objectForKey:kCircleLayer];
+    CAShapeLayer *pointLayer = [aDic objectForKey:kPointLayer];
+    
+    circleLayer.strokeColor = kCircleStrokeColorTouched;
+    circleLayer.lineWidth = kCircleLineWidthTouched;
+    
+    pointLayer.fillColor = kPointFillColorTouched;
+    pointLayer.strokeColor = kPointFillColorTouched;
+    
+    NSString *checkStr = [NSString stringWithFormat:@"%ld", circleIndex+1];
+    if (![self checkString:checkStr isInArray:_sequenceArr]) {
+        [_sequenceArr addObject:checkStr];
     }
 }
 
@@ -539,7 +396,7 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    CGPoint point = [[touches anyObject] locationInView:self];
+//    CGPoint point = [[touches anyObject] locationInView:self];
 //    NSLog(@"ended point: (%f,%f)", point.x, point.y);
     
     NSString *sequenceStr = @"";
