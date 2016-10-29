@@ -17,30 +17,39 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RHc-rp-kkT" userLabel="Label1">
+                                <rect key="frame" x="300" y="30" width="0.0" height="0.0"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jpe-Mg-xBR" userLabel="Label2">
+                                <rect key="frame" x="300" y="50" width="0.0" height="0.0"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYY-Qk-tEM">
-                                <rect key="frame" x="277" y="74" width="47" height="30"/>
+                                <rect key="frame" x="277" y="70" width="47" height="30"/>
                                 <state key="normal" title="Reload"/>
                                 <connections>
                                     <action selector="pressReloadBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TcC-BP-4rQ"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RHc-rp-kkT">
-                                <rect key="frame" x="279" y="39" width="42" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="kYY-Qk-tEM" firstAttribute="top" secondItem="Jpe-Mg-xBR" secondAttribute="bottom" constant="20" id="7Fz-sn-B3r"/>
                             <constraint firstItem="RHc-rp-kkT" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="7ze-9P-tux"/>
                             <constraint firstItem="kYY-Qk-tEM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Dhg-rQ-oMC"/>
-                            <constraint firstItem="RHc-rp-kkT" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="19" id="JEQ-al-nfN"/>
-                            <constraint firstItem="kYY-Qk-tEM" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="54" id="QXE-rX-t3W"/>
+                            <constraint firstItem="RHc-rp-kkT" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="10" id="JEQ-al-nfN"/>
+                            <constraint firstItem="Jpe-Mg-xBR" firstAttribute="top" secondItem="RHc-rp-kkT" secondAttribute="bottom" constant="20" id="PJE-yY-WS7"/>
+                            <constraint firstItem="Jpe-Mg-xBR" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="RXV-Oi-hV9"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="label" destination="RHc-rp-kkT" id="tT5-JW-rp0"/>
+                        <outlet property="passSeqLabel" destination="Jpe-Mg-xBR" id="byz-ej-K14"/>
+                        <outlet property="titlelabel" destination="RHc-rp-kkT" id="XG7-rO-FEc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

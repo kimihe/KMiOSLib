@@ -9,6 +9,21 @@
 #define USE_DEBUG 1
 #define USE_DRAWRECT 0
 
+#define kCircleStrokeColorNormal  colorFromRGBA(0x89CFF0,  1.0).CGColor
+#define kCircleStrokeColorTouched colorFromRGBA(0xAACFFF, 1.0).CGColor
+#define kCircleStorkeColorInvalid [UIColor redColor].CGColor
+
+#define kCircleLineWidthNormal  1.0f
+#define kCircleLineWidthTouched 2.0f
+#define kCircleLineWidthInvalid 1.0f
+
+#define kPointFillColorNormal  [UIColor clearColor].CGColor
+#define kPointFillColorTouched colorFromRGBA(0xAACFFF, 1.0).CGColor
+#define kPointFillColorInvalid [UIColor redColor].CGColor
+
+#define kCircleLayer @"circleLayer"
+#define kPointLayer  @"pointLayer"
+
 #import "KMNineBoxView.h"
 #import "KMUIKitMacro.h"
 #import "KMMathHelper.h"
@@ -53,32 +68,42 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     CGPoint _boxCneter8;
     CGPoint _boxCneter9;
     
-    CAShapeLayer *_circleLayer1;
-    CAShapeLayer *_circleLayer2;
-    CAShapeLayer *_circleLayer3;
-    CAShapeLayer *_circleLayer4;
-    CAShapeLayer *_circleLayer5;
-    CAShapeLayer *_circleLayer6;
-    CAShapeLayer *_circleLayer7;
-    CAShapeLayer *_circleLayer8;
-    CAShapeLayer *_circleLayer9;
+    NSDictionary *_circleLayerDic1;
+    NSDictionary *_circleLayerDic2;
+    NSDictionary *_circleLayerDic3;
+    NSDictionary *_circleLayerDic4;
+    NSDictionary *_circleLayerDic5;
+    NSDictionary *_circleLayerDic6;
+    NSDictionary *_circleLayerDic7;
+    NSDictionary *_circleLayerDic8;
+    NSDictionary *_circleLayerDic9;
+    NSArray *_nineCirclesArr;           //!< 保存9个circleLayer的数组
     
-    NSMutableArray *_sequenceArr;
+    
+    NSMutableArray *_sequenceArr;       //!< 保存九宫格序列的数组
     NSInteger _stepCount;
+    KMNineBoxState _nineBoxState;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-#if USE_DEBUG
-        self.backgroundColor = [UIColor grayColor];
-#endif
-        _sequenceArr = [NSMutableArray arrayWithCapacity:9];
+        [self initData];
         [self setupBoundsAndFrame];
         [self drawNineBox];
     }
     return self;
+}
+
+- (void)initData
+{
+#if USE_DEBUG
+    self.backgroundColor = [UIColor grayColor];
+#endif
+    
+    _sequenceArr = [NSMutableArray arrayWithCapacity:9];
+    self.predefinedPassSeq = @"#########";
 }
 
 - (void)setupBoundsAndFrame
@@ -133,7 +158,7 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
 }
 #endif
 
-#pragma mark - Nine Box
+#pragma mark -  Set Nine Box
 - (void)drawNineBox
 {
 //    for (CAShapeLayer *aCircleLayer in self.layer.sublayers) {
@@ -145,26 +170,33 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     }
     
     // 粗暴易懂的绘制
-    _circleLayer1 = [self drawCircleAtPoint:_boxCneter1 withRadius:_circleRadius];
-    _circleLayer2 = [self drawCircleAtPoint:_boxCneter2 withRadius:_circleRadius];
-    _circleLayer3 = [self drawCircleAtPoint:_boxCneter3 withRadius:_circleRadius];
-    _circleLayer4 = [self drawCircleAtPoint:_boxCneter4 withRadius:_circleRadius];
-    _circleLayer5 = [self drawCircleAtPoint:_boxCneter5 withRadius:_circleRadius];
-    _circleLayer6 = [self drawCircleAtPoint:_boxCneter6 withRadius:_circleRadius];
-    _circleLayer7 = [self drawCircleAtPoint:_boxCneter7 withRadius:_circleRadius];
-    _circleLayer8 = [self drawCircleAtPoint:_boxCneter8 withRadius:_circleRadius];
-    _circleLayer9 = [self drawCircleAtPoint:_boxCneter9 withRadius:_circleRadius];
+    _circleLayerDic1 = [self drawCircleAtPoint:_boxCneter1 withRadius:_circleRadius];
+    _circleLayerDic2 = [self drawCircleAtPoint:_boxCneter2 withRadius:_circleRadius];
+    _circleLayerDic3 = [self drawCircleAtPoint:_boxCneter3 withRadius:_circleRadius];
+    _circleLayerDic4 = [self drawCircleAtPoint:_boxCneter4 withRadius:_circleRadius];
+    _circleLayerDic5 = [self drawCircleAtPoint:_boxCneter5 withRadius:_circleRadius];
+    _circleLayerDic6 = [self drawCircleAtPoint:_boxCneter6 withRadius:_circleRadius];
+    _circleLayerDic7 = [self drawCircleAtPoint:_boxCneter7 withRadius:_circleRadius];
+    _circleLayerDic8 = [self drawCircleAtPoint:_boxCneter8 withRadius:_circleRadius];
+    _circleLayerDic9 = [self drawCircleAtPoint:_boxCneter9 withRadius:_circleRadius];
     
-    // 粗暴易懂的添加
-    [self.layer addSublayer:_circleLayer1];
-    [self.layer addSublayer:_circleLayer2];
-    [self.layer addSublayer:_circleLayer3];
-    [self.layer addSublayer:_circleLayer4];
-    [self.layer addSublayer:_circleLayer5];
-    [self.layer addSublayer:_circleLayer6];
-    [self.layer addSublayer:_circleLayer7];
-    [self.layer addSublayer:_circleLayer8];
-    [self.layer addSublayer:_circleLayer9];
+    
+    _nineCirclesArr = @[_circleLayerDic1,
+                        _circleLayerDic2,
+                        _circleLayerDic3,
+                        _circleLayerDic4,
+                        _circleLayerDic5,
+                        _circleLayerDic6,
+                        _circleLayerDic7,
+                        _circleLayerDic8,
+                        _circleLayerDic9];
+    
+    for (NSDictionary *aDic in _nineCirclesArr) {
+        CAShapeLayer *circleLayer = [aDic objectForKey:kCircleLayer];
+        CAShapeLayer *pointLayer = [aDic objectForKey:kPointLayer];
+        [self.layer addSublayer:circleLayer];
+        [self.layer addSublayer:pointLayer];
+    }
 }
 
 - (void)reloadNineBox
@@ -173,34 +205,116 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     [self drawNineBox];
 }
 
-- (void)clearNineBox
+- (void)resetNineBox
 {
-    self.layer.sublayers = nil;
-    [self drawNineBox];
+    self.userInteractionEnabled = YES;
+    [_sequenceArr removeAllObjects];
+    [self setNineBoxState:KMNineBoxStateNormal];
 }
 
-- (CAShapeLayer *)drawCircleAtPoint:(CGPoint)center withRadius:(CGFloat)radius
+- (void)setNineBoxState:(KMNineBoxState)nineBoxState
 {
-    CGRect frame = CGRectMake(center.x-_circleRadius, center.y-_circleRadius, _circleRadius *2, _circleRadius *2);
-    //create a path: 矩形内切圆
-    UIBezierPath *bezierPath = [UIBezierPath bezierPathWithOvalInRect:frame];
+    _nineBoxState = nineBoxState;
     
+    switch (nineBoxState) {
+        case KMNineBoxStateNormal: {
+            for (NSDictionary *aDic in _nineCirclesArr) {
+                CAShapeLayer *circleLayer = [aDic objectForKey:kCircleLayer];
+                CAShapeLayer *pointLayer = [aDic objectForKey:kPointLayer];
+                
+                circleLayer.strokeColor = kCircleStrokeColorNormal;
+                circleLayer.lineWidth = kCircleLineWidthNormal;
+                
+                pointLayer.fillColor = kPointFillColorNormal;
+                pointLayer.strokeColor = kPointFillColorNormal;
+            }
+            
+            break;
+        }
+            
+        case KMNineBoxStateTouched: {
+            
+            break;
+        }
+            
+        case KMNineBoxStatePassed: {
+            
+            break;
+        }
+            
+        case KMNineBoxStateFailed: {
+            for (int i = 0; i < [_sequenceArr count]; i++) {
+                // 取出序列的每一个单步
+                NSInteger circleIndex = [_sequenceArr[i] integerValue] -1;
+                // 找出对应的circleLayerDic
+                NSDictionary *aDic = _nineCirclesArr[circleIndex];
+                CAShapeLayer *circleLayer = [aDic objectForKey:kCircleLayer];
+                CAShapeLayer *pointLayer = [aDic objectForKey:kPointLayer];
+                
+                circleLayer.strokeColor = kCircleStorkeColorInvalid;
+                circleLayer.lineWidth = kCircleLineWidthInvalid;
+                
+                pointLayer.fillColor = kPointFillColorInvalid;
+                pointLayer.strokeColor = kPointFillColorInvalid;
+            }
+        
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
+- (NSDictionary *)drawCircleAtPoint:(CGPoint)center withRadius:(CGFloat)radius
+{
+    // 画圆圈
+    CGRect frameCircle = CGRectMake(center.x-_circleRadius, center.y-_circleRadius, _circleRadius *2, _circleRadius *2);
+    //create a path: 矩形内切圆
+    UIBezierPath *bezierPathCircle = [UIBezierPath bezierPathWithOvalInRect:frameCircle];
     //draw the path using a CAShapeLayer
     CAShapeLayer *circleLayer = [CAShapeLayer layer];
-    circleLayer.path = bezierPath.CGPath;
+    circleLayer.path = bezierPathCircle.CGPath;
     circleLayer.fillColor = [UIColor clearColor].CGColor;
-    circleLayer.strokeColor = colorFromRGBA(0x89CFF0, 1.0).CGColor;
-    circleLayer.lineWidth = 1.0f;
+    circleLayer.strokeColor = kCircleStrokeColorNormal;
+    circleLayer.lineWidth = kCircleLineWidthNormal;
     
-    return circleLayer;
+    // 画中心的圆点
+    CGRect framePoint = CGRectMake(center.x-_circleRadius/4, center.y-_circleRadius/4, _circleRadius /4*2, _circleRadius /4*2);
+    //create a path: 矩形内切圆
+    UIBezierPath *bezierPathPoint = [UIBezierPath bezierPathWithOvalInRect:framePoint];
+    //draw the path using a CAShapeLayer
+    CAShapeLayer *pointLayer = [CAShapeLayer layer];
+    pointLayer.path = bezierPathPoint.CGPath;
+#if USE_DEBUG
+    pointLayer.fillColor = [UIColor greenColor].CGColor;
+    pointLayer.strokeColor = [UIColor greenColor].CGColor;
+#else
+    pointLayer.fillColor = kPointFillColorNormal;
+    pointLayer.strokeColor = kPointFillColorNormal;
+#endif
+    pointLayer.lineWidth = kCircleLineWidthNormal;
+
+    NSDictionary *circleLayerDic = @{
+                                     kCircleLayer : circleLayer,
+                                     kPointLayer : pointLayer
+                                     };
+    
+    return circleLayerDic;
 }
 
 - (void)decorateCircleWithBoxIndex:(KMNineBoxIndex)index
 {
     switch (index) {
         case KMNineBoxIndex1: {
-            _circleLayer1.strokeColor = colorFromRGBA(0xAACFFF, 1.0).CGColor;
-            _circleLayer1.lineWidth = 2.0f;
+            CAShapeLayer *circleLayer = [_circleLayerDic1 objectForKey:kCircleLayer];
+            CAShapeLayer *pointLayer = [_circleLayerDic1 objectForKey:kPointLayer];
+            
+            circleLayer.strokeColor = kCircleStrokeColorTouched;
+            circleLayer.lineWidth = kCircleLineWidthTouched;
+            
+            pointLayer.fillColor = kPointFillColorTouched;
+            pointLayer.strokeColor = kPointFillColorTouched;
             
             if (![self checkString:@"1" isInArray:_sequenceArr]) {
                 [_sequenceArr addObject:@"1"];
@@ -210,8 +324,14 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
         }
             
         case KMNineBoxIndex2: {
-            _circleLayer2.strokeColor = colorFromRGBA(0xAACFFF, 1.0).CGColor;
-            _circleLayer2.lineWidth = 2.0f;
+            CAShapeLayer *circleLayer = [_circleLayerDic2 objectForKey:kCircleLayer];
+            CAShapeLayer *pointLayer = [_circleLayerDic2 objectForKey:kPointLayer];
+            
+            circleLayer.strokeColor = kCircleStrokeColorTouched;
+            circleLayer.lineWidth = kCircleLineWidthTouched;
+            
+            pointLayer.fillColor = kPointFillColorTouched;
+            pointLayer.strokeColor = kPointFillColorTouched;
             
             if (![self checkString:@"2" isInArray:_sequenceArr]) {
                 [_sequenceArr addObject:@"2"];
@@ -221,8 +341,14 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
         }
             
         case KMNineBoxIndex3: {
-            _circleLayer3.strokeColor = colorFromRGBA(0xAACFFF, 1.0).CGColor;
-            _circleLayer3.lineWidth = 2.0f;
+            CAShapeLayer *circleLayer = [_circleLayerDic3 objectForKey:kCircleLayer];
+            CAShapeLayer *pointLayer = [_circleLayerDic3 objectForKey:kPointLayer];
+            
+            circleLayer.strokeColor = kCircleStrokeColorTouched;
+            circleLayer.lineWidth = kCircleLineWidthTouched;
+            
+            pointLayer.fillColor = kPointFillColorTouched;
+            pointLayer.strokeColor = kPointFillColorTouched;
             
             if (![self checkString:@"3" isInArray:_sequenceArr]) {
                 [_sequenceArr addObject:@"3"];
@@ -232,42 +358,63 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
         }
         
         case KMNineBoxIndex4: {
-            _circleLayer4.strokeColor = colorFromRGBA(0xAACFFF, 1.0).CGColor;
-            _circleLayer4.lineWidth = 2.0f;
+            CAShapeLayer *circleLayer = [_circleLayerDic4 objectForKey:kCircleLayer];
+            CAShapeLayer *pointLayer = [_circleLayerDic4 objectForKey:kPointLayer];
+            
+            circleLayer.strokeColor = kCircleStrokeColorTouched;
+            circleLayer.lineWidth = kCircleLineWidthTouched;
+            
+            pointLayer.fillColor = kPointFillColorTouched;
+            pointLayer.strokeColor = kPointFillColorTouched;
             
             if (![self checkString:@"4" isInArray:_sequenceArr]) {
                [_sequenceArr addObject:@"4"];
             }
-            
 
             break;
         }
         case KMNineBoxIndex5: {
-            _circleLayer5.strokeColor = colorFromRGBA(0xAACFFF, 1.0).CGColor;
-            _circleLayer5.lineWidth = 2.0f;
+            CAShapeLayer *circleLayer = [_circleLayerDic5 objectForKey:kCircleLayer];
+            CAShapeLayer *pointLayer = [_circleLayerDic5 objectForKey:kPointLayer];
+            
+            circleLayer.strokeColor = kCircleStrokeColorTouched;
+            circleLayer.lineWidth = kCircleLineWidthTouched;
+            
+            pointLayer.fillColor = kPointFillColorTouched;
+            pointLayer.strokeColor = kPointFillColorTouched;
             
             if (![self checkString:@"5" isInArray:_sequenceArr]) {
                 [_sequenceArr addObject:@"5"];
                 
             }
             
-
             break;
         }
         case KMNineBoxIndex6: {
-            _circleLayer6.strokeColor = colorFromRGBA(0xAACFFF, 1.0).CGColor;
-            _circleLayer6.lineWidth = 2.0f;
+            CAShapeLayer *circleLayer = [_circleLayerDic6 objectForKey:kCircleLayer];
+            CAShapeLayer *pointLayer = [_circleLayerDic6 objectForKey:kPointLayer];
+            
+            circleLayer.strokeColor = kCircleStrokeColorTouched;
+            circleLayer.lineWidth = kCircleLineWidthTouched;
+            
+            pointLayer.fillColor = kPointFillColorTouched;
+            pointLayer.strokeColor = kPointFillColorTouched;
             
             if (![self checkString:@"6" isInArray:_sequenceArr]) {
                 [_sequenceArr addObject:@"6"];
             }
             
-
             break;
         }
         case KMNineBoxIndex7: {
-            _circleLayer7.strokeColor = colorFromRGBA(0xAACFFF, 1.0).CGColor;
-            _circleLayer7.lineWidth = 2.0f;
+            CAShapeLayer *circleLayer = [_circleLayerDic7 objectForKey:kCircleLayer];
+            CAShapeLayer *pointLayer = [_circleLayerDic7 objectForKey:kPointLayer];
+            
+            circleLayer.strokeColor = kCircleStrokeColorTouched;
+            circleLayer.lineWidth = kCircleLineWidthTouched;
+            
+            pointLayer.fillColor = kPointFillColorTouched;
+            pointLayer.strokeColor = kPointFillColorTouched;
             
             if (![self checkString:@"7" isInArray:_sequenceArr]) {
                 [_sequenceArr addObject:@"7"];
@@ -276,8 +423,14 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
             break;
         }
         case KMNineBoxIndex8: {
-            _circleLayer8.strokeColor = colorFromRGBA(0xAACFFF, 1.0).CGColor;
-            _circleLayer8.lineWidth = 2.0f;
+            CAShapeLayer *circleLayer = [_circleLayerDic8 objectForKey:kCircleLayer];
+            CAShapeLayer *pointLayer = [_circleLayerDic8 objectForKey:kPointLayer];
+            
+            circleLayer.strokeColor = kCircleStrokeColorTouched;
+            circleLayer.lineWidth = kCircleLineWidthTouched;
+            
+            pointLayer.fillColor = kPointFillColorTouched;
+            pointLayer.strokeColor = kPointFillColorTouched;
             
             if (![self checkString:@"8" isInArray:_sequenceArr]) {
                 [_sequenceArr addObject:@"8"];
@@ -286,14 +439,19 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
             break;
         }
         case KMNineBoxIndex9: {
-            _circleLayer9.strokeColor = colorFromRGBA(0xAACFFF, 1.0).CGColor;
-            _circleLayer9.lineWidth = 2.0f;
+            CAShapeLayer *circleLayer = [_circleLayerDic9 objectForKey:kCircleLayer];
+            CAShapeLayer *pointLayer = [_circleLayerDic9 objectForKey:kPointLayer];
+            
+            circleLayer.strokeColor = kCircleStrokeColorTouched;
+            circleLayer.lineWidth = kCircleLineWidthTouched;
+            
+            pointLayer.fillColor = kPointFillColorTouched;
+            pointLayer.strokeColor = kPointFillColorTouched;
             
             if (![self checkString:@"9" isInArray:_sequenceArr]) {
                 [_sequenceArr addObject:@"9"];
             }
             
-
             break;
         }
           
@@ -384,18 +542,30 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     CGPoint point = [[touches anyObject] locationInView:self];
 //    NSLog(@"ended point: (%f,%f)", point.x, point.y);
     
-    
-    NSLog(@"seq: %@", _sequenceArr);
-    
     NSString *sequenceStr = @"";
     for (int i = 0; i < [_sequenceArr count]; i++) {
         NSString *tmp = [NSString stringWithFormat:@"%@", _sequenceArr[i]];
         sequenceStr = [NSString stringWithFormat:@"%@%@", sequenceStr, tmp];
     }
-    [self.delegate nineBoxDidFinishWithSequence:sequenceStr];
+    NSLog(@"Seq: %@", sequenceStr);
     
-    [_sequenceArr removeAllObjects];
-    [self clearNineBox];
+    if ([self.predefinedPassSeq isEqualToString:sequenceStr]) {
+        [self setNineBoxState:KMNineBoxStatePassed];
+    }
+    else {
+        [self setNineBoxState:KMNineBoxStateFailed];
+    }
+    
+    [self.delegate nineBoxDidFinishWithState:_nineBoxState passSequence:sequenceStr];
+    
+    // 再重置前不再响应用户触摸
+    self.userInteractionEnabled = NO;
+    
+    //延迟1秒再重置
+    dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
+    dispatch_after(delay, dispatch_get_main_queue(), ^(void){
+        [self resetNineBox];
+    });
 }
 
 
