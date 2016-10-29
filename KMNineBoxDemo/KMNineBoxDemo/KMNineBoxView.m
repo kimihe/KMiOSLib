@@ -9,20 +9,24 @@
 #define USE_DEBUG 1
 #define USE_DRAWRECT 0
 
-#define kCircleStrokeColorNormal  colorFromRGBA(0x89CFF0,  1.0).CGColor
+#define kCircleStrokeColorNormal  colorFromRGBA(0x89CFF0, 1.0).CGColor
 #define kCircleStrokeColorTouched colorFromRGBA(0xAACFFF, 1.0).CGColor
-#define kCircleStorkeColorInvalid [UIColor redColor].CGColor
+#define kCircleStorkeColorInvalid [UIColor                redColor].CGColor
 
-#define kCircleLineWidthNormal  1.0f
-#define kCircleLineWidthTouched 2.0f
-#define kCircleLineWidthInvalid 1.0f
+#define kCircleLineWidthNormal                            1.0f
+#define kCircleLineWidthTouched                           2.0f
+#define kCircleLineWidthInvalid                           1.0f
 
-#define kPointFillColorNormal  [UIColor clearColor].CGColor
-#define kPointFillColorTouched colorFromRGBA(0xAACFFF, 1.0).CGColor
-#define kPointFillColorInvalid [UIColor redColor].CGColor
+#define kPointFillColorNormal  [UIColor                   clearColor].CGColor
+#define kPointFillColorTouched colorFromRGBA(0xAACFFF,    1.0).CGColor
+#define kPointFillColorInvalid [UIColor                   redColor].CGColor
+
+#define kConnectionLineColor colorFromRGBA(0xAACFFF,      1.0).CGColor
+#define kConnectionLineWidth                              1.0f
 
 #define kCircleLayer @"circleLayer"
 #define kPointLayer  @"pointLayer"
+#define kBoxCenter   @"boxCenter"
 
 #import "KMNineBoxView.h"
 #import "KMUIKitMacro.h"
@@ -284,9 +288,14 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
 #endif
     pointLayer.lineWidth = kCircleLineWidthNormal;
 
+    // 圆心位置
+    NSValue *boxCenter = [NSValue valueWithCGPoint:center];
+    
+    //保存圆圈，圆点和圆心位置
     NSDictionary *circleLayerDic = @{
                                      kCircleLayer : circleLayer,
-                                     kPointLayer : pointLayer
+                                     kPointLayer  : pointLayer,
+                                     kBoxCenter   : boxCenter
                                      };
     
     return circleLayerDic;
@@ -314,6 +323,36 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     NSString *checkStr = [NSString stringWithFormat:@"%ld", circleIndex+1];
     if (![self checkString:checkStr isInArray:_sequenceArr]) {
         [_sequenceArr addObject:checkStr];
+    }
+    
+    [self drawConnectionLine];
+}
+
+- (void)drawConnectionLine
+{
+    NSInteger count = [_sequenceArr count];
+    if (count > 1) {
+        // 只有一个圆被触摸的时候不用画连接线
+        NSInteger currentIndex = [[_sequenceArr lastObject] integerValue];
+        NSInteger previousIndex = [[_sequenceArr objectAtIndex:(count-2)] integerValue];
+        
+        NSDictionary *currentCircleLayerDic = _nineCirclesArr[currentIndex];
+        NSDictionary *previousCircleLayerDic = _nineCirclesArr[previousIndex];
+        
+        CGPoint currentBoxCenter = [[currentCircleLayerDic objectForKey:kBoxCenter] CGPointValue];
+        CGPoint previousBoxCenter = [[previousCircleLayerDic objectForKey:kBoxCenter] CGPointValue];
+        
+        CAShapeLayer *line = [CAShapeLayer layer];
+        UIBezierPath *linePath = [UIBezierPath bezierPath];
+        [linePath moveToPoint: previousBoxCenter];
+        [linePath addLineToPoint: currentBoxCenter];
+        line.path = linePath.CGPath;
+        line.fillColor = kConnectionLineColor;
+        line.opacity = 1.0;
+        line.strokeColor = kConnectionLineColor;
+        line.lineWidth = kConnectionLineWidth;
+        
+//        [self.layer addSublayer:line];
     }
 }
 
