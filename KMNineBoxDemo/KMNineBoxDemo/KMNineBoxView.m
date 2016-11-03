@@ -63,15 +63,18 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     CGFloat _boxWidth;                      //!< 九宫格实际正方形底的边长，为页边距地两倍
     CGFloat _circleRadius;                  //!< 圆的半径，为0.7单位长度
     
+    // 九宫格绘图相关
     NSMutableArray *_nineCirclesArr;        //!< 保存9个circleLayer的数组会随frame变化
     NSArray *_boxCentersArr;                //!< 保存9个中心点的位置，会随frame变化
+    
+    // 跟踪九宫格状态
     NSMutableArray *_sequenceArr;           //!< 保存九宫格序列的数组，会随触摸手势变化
     KMNineBoxState _nineBoxState;           //!< 九宫格底状态，主要关注普通和失败两种状态
     
     //连线相关
     NSMutableArray *_connectionLinesArr;    //!< 保存连线的数组，会随触摸手势变化
-    CGPoint _currentBoxCenter;              //!< 现在这个中心点
-    CGPoint _previousBoxCenter;             //!< 之前那个中心点
+    CGPoint _currentBoxCenter;              //!< 现在这个中心点，两点确定一条线
+    CGPoint _previousBoxCenter;             //!< 之前那个中心点，两点确定一条线
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -113,25 +116,25 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     _boxWidth = _unitLength *2;
     _circleRadius = _unitLength *0.7;
     
-    CGPoint boxCneter1 = CGPointMake(_unitLength+_unitLength *1, _unitLength+_unitLength *1);
-    CGPoint boxCneter2 = CGPointMake(_unitLength+_unitLength *3, _unitLength+_unitLength *1);
-    CGPoint boxCneter3 = CGPointMake(_unitLength+_unitLength *5, _unitLength+_unitLength *1);
-    CGPoint boxCneter4 = CGPointMake(_unitLength+_unitLength *1, _unitLength+_unitLength *3);
-    CGPoint boxCneter5 = CGPointMake(_unitLength+_unitLength *3, _unitLength+_unitLength *3);
-    CGPoint boxCneter6 = CGPointMake(_unitLength+_unitLength *5, _unitLength+_unitLength *3);
-    CGPoint boxCneter7 = CGPointMake(_unitLength+_unitLength *1, _unitLength+_unitLength *5);
-    CGPoint boxCneter8 = CGPointMake(_unitLength+_unitLength *3, _unitLength+_unitLength *5);
-    CGPoint boxCneter9 = CGPointMake(_unitLength+_unitLength *5, _unitLength+_unitLength *5);
-    _boxCentersArr = @[[NSValue valueWithCGPoint:boxCneter1],
-                               [NSValue valueWithCGPoint:boxCneter2],
-                               [NSValue valueWithCGPoint:boxCneter3],
-                               [NSValue valueWithCGPoint:boxCneter4],
-                               [NSValue valueWithCGPoint:boxCneter5],
-                               [NSValue valueWithCGPoint:boxCneter6],
-                               [NSValue valueWithCGPoint:boxCneter7],
-                               [NSValue valueWithCGPoint:boxCneter8],
-                               [NSValue valueWithCGPoint:boxCneter9]
-                               ];
+    CGPoint boxCneter0 = CGPointMake(_unitLength+_unitLength *1, _unitLength+_unitLength *1);
+    CGPoint boxCneter1 = CGPointMake(_unitLength+_unitLength *3, _unitLength+_unitLength *1);
+    CGPoint boxCneter2 = CGPointMake(_unitLength+_unitLength *5, _unitLength+_unitLength *1);
+    CGPoint boxCneter3 = CGPointMake(_unitLength+_unitLength *1, _unitLength+_unitLength *3);
+    CGPoint boxCneter4 = CGPointMake(_unitLength+_unitLength *3, _unitLength+_unitLength *3);
+    CGPoint boxCneter5 = CGPointMake(_unitLength+_unitLength *5, _unitLength+_unitLength *3);
+    CGPoint boxCneter6 = CGPointMake(_unitLength+_unitLength *1, _unitLength+_unitLength *5);
+    CGPoint boxCneter7 = CGPointMake(_unitLength+_unitLength *3, _unitLength+_unitLength *5);
+    CGPoint boxCneter8 = CGPointMake(_unitLength+_unitLength *5, _unitLength+_unitLength *5);
+    _boxCentersArr = @[[NSValue valueWithCGPoint:boxCneter0],
+                       [NSValue valueWithCGPoint:boxCneter1],
+                       [NSValue valueWithCGPoint:boxCneter2],
+                       [NSValue valueWithCGPoint:boxCneter3],
+                       [NSValue valueWithCGPoint:boxCneter4],
+                       [NSValue valueWithCGPoint:boxCneter5],
+                       [NSValue valueWithCGPoint:boxCneter6],
+                       [NSValue valueWithCGPoint:boxCneter7],
+                       [NSValue valueWithCGPoint:boxCneter8]
+                       ];
 }
 
 - (void)layoutSubviews
@@ -322,7 +325,7 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
             // 设置触摸过的圆圈为红色
             for (int i = 0; i < [_sequenceArr count]; i++) {
                 // 取出序列的每一个单步
-                NSInteger circleIndex = [_sequenceArr[i] integerValue] -1; // 减1
+                NSInteger circleIndex = [_sequenceArr[i] integerValue];
                 // 找出对应的circleLayerDic
                 NSDictionary *aDic = _nineCirclesArr[circleIndex];
                 CAShapeLayer *circleLayer = [aDic objectForKey:kCircleLayer];
@@ -369,7 +372,7 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     pointLayer.fillColor = kPointFillColorTouched;
     pointLayer.strokeColor = kPointFillColorTouched;
     
-    NSString *checkStr = [NSString stringWithFormat:@"%ld", circleIndex+1];//加1
+    NSString *checkStr = [NSString stringWithFormat:@"%ld", circleIndex];
     if (![self checkString:checkStr isInArray:_sequenceArr]) {
         // 不允许重复添加
         [_sequenceArr addObject:checkStr];
@@ -383,8 +386,8 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     NSInteger count = [_sequenceArr count];
     if (count > 1) {
         // 只有一个圆被触摸的时候不用画连接线
-        NSInteger currentIndex = [[_sequenceArr lastObject] integerValue]-1;//减1
-        NSInteger previousIndex = [[_sequenceArr objectAtIndex:(count-2)] integerValue]-1;//减1
+        NSInteger currentIndex = [[_sequenceArr lastObject] integerValue];
+        NSInteger previousIndex = [[_sequenceArr objectAtIndex:(count-2)] integerValue];
         
         NSDictionary *currentCircleLayerDic = _nineCirclesArr[currentIndex];
         NSDictionary *previousCircleLayerDic = _nineCirclesArr[previousIndex];
@@ -491,7 +494,9 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
     
     NSString *sequenceStr = @"";
     for (int i = 0; i < [_sequenceArr count]; i++) {
-        NSString *tmp = [NSString stringWithFormat:@"%@", _sequenceArr[i]];
+        
+        //程序员从0计数，这里需要转换成用户习惯从1开始，如果不需要考虑这一点，那么直接取出用即可
+        NSString *tmp = [NSString stringWithFormat:@"%ld", [_sequenceArr[i] integerValue] +1];
         sequenceStr = [NSString stringWithFormat:@"%@%@", sequenceStr, tmp];
     }
     NSLog(@"Seq: %@", sequenceStr);
