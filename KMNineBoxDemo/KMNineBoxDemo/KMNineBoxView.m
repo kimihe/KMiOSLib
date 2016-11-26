@@ -508,7 +508,9 @@ typedef NS_ENUM(NSInteger, KMNineBoxIndex) {
         [self setNineBoxState:KMNineBoxStateFailed];
     }
     
-    [self.delegate nineBoxDidFinishWithState:_nineBoxState passSequence:sequenceStr];
+    if ([self.delegate respondsToSelector:@selector(nineBoxDidFinishWithState:passSequence:)]) {
+        [self.delegate nineBoxDidFinishWithState:_nineBoxState passSequence:sequenceStr];
+    }
     
     // 再重置前不再响应用户触摸
     self.userInteractionEnabled = NO;
