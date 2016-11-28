@@ -12,13 +12,14 @@
 #import "KMAnimatorManager.h"
 #import "KMCubeBehavior.h"
 #import "KMDropView.h"
+#import "KMPanGestureRecognizer.h"
 #import "UIColor+KMColorHelper.h"
 
 
 NSInteger dropsPerRow = 8;
 CGSize DROP_SIZE = {50, 50};
 
-@interface KMGameView () <UIDynamicAnimatorDelegate>
+@interface KMGameView () <UIDynamicAnimatorDelegate, KMPanGestureRecognizerDelegate>
 {
     KMCubeBehavior *_cubeBehavior;
     KMAnimatorManager *_animator;
@@ -51,7 +52,7 @@ CGSize DROP_SIZE = {50, 50};
 {
     self.backgroundColor = [UIColor grayColor];
     
-    [self addSwipeGesturer];
+    [self addPanGesturer];
 }
 
 - (void)initPhysicalEngine
@@ -69,30 +70,23 @@ CGSize DROP_SIZE = {50, 50};
     DROP_SIZE  = CGSizeMake(self.frame.size.width/dropsPerRow, self.frame.size.width/dropsPerRow);
 }
 
-#pragma mark - Gesture
-- (void)addSwipeGesturer
-{
-    UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(reportSwipe:)];
-    rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
-    [self addGestureRecognizer:rightSwipe];
-    
-    UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(reportSwipe:)];
-    leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
-    [self addGestureRecognizer:leftSwipe];
-    
-    UISwipeGestureRecognizer *upSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(reportSwipe:)];
-    upSwipe.direction = UISwipeGestureRecognizerDirectionUp;
-    [self addGestureRecognizer:upSwipe];
-    
-    UISwipeGestureRecognizer *downSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(reportSwipe:)];
-    downSwipe.direction = UISwipeGestureRecognizerDirectionDown;
-    [self addGestureRecognizer:downSwipe];
+#pragma mark - layoutSubviews
+- (void)layoutSubviews {
+    [self setupBoundsAndFrame];
 }
 
-- (void)reportSwipe:(UISwipeGestureRecognizer *)recognizer
+#pragma mark - Gesture
+- (void)addPanGesturer
+{
+    KMPanGestureRecognizer *panGesture = [[KMPanGestureRecognizer alloc]initWithTarget:self action:@selector(reportPan:)];
+    panGesture.panDelegate = self;
+    [self addGestureRecognizer:panGesture];
+}
+
+- (void)reportPan:(KMPanGestureRecognizer *)sender
 {
     // 检测_touchBeganPoint所在的view最上层subview的class
-    KMDropView *hitView = [self hitCheckWithPoint:_touchBeganPoint];
+    KMDropView *hitView = [self hitCheckWithPoint:sender.touchBeganPoint];
     
     // 如果返回不为nil，就说明它是KMDropView*
     if (hitView) {
@@ -101,9 +95,9 @@ CGSize DROP_SIZE = {50, 50};
         CGFloat y = hitView.center.y;
         CGFloat squreWidth = DROP_SIZE.width;
         
-        switch (recognizer.direction) {
-            case UISwipeGestureRecognizerDirectionRight: {
-                NSLog(@"right swipe detected");
+        switch (sender.direction) {
+            case KMPanGestureRecognizerDirectionRight: {
+                NSLog(@"right pan detected");
                 
                 KMDropView *rightView = [self hitCheckWithPoint:CGPointMake(x+squreWidth, y)];
                 if (rightView) {
@@ -113,8 +107,8 @@ CGSize DROP_SIZE = {50, 50};
                 
                 break;
             }
-            case UISwipeGestureRecognizerDirectionLeft: {
-                NSLog(@"left swipe detected");
+            case KMPanGestureRecognizerDirectionLeft: {
+                NSLog(@"left pan detected");
                 
                 KMDropView *leftView = [self hitCheckWithPoint:CGPointMake(x-squreWidth, y)];
                 if (leftView) {
@@ -124,8 +118,8 @@ CGSize DROP_SIZE = {50, 50};
                 
                 break;
             }
-            case UISwipeGestureRecognizerDirectionUp: {
-                NSLog(@"up swipe detected");
+            case KMPanGestureRecognizerDirectionUp: {
+                NSLog(@"up pan detected");
                 
                 KMDropView *upView = [self hitCheckWithPoint:CGPointMake(x, y-squreWidth)];
                 if (upView) {
@@ -135,14 +129,19 @@ CGSize DROP_SIZE = {50, 50};
                 
                 break;
             }
-            case UISwipeGestureRecognizerDirectionDown: {
-                NSLog(@"down swipe detected");
+            case KMPanGestureRecognizerDirectionDown: {
+                NSLog(@"down pan detected");
                 
                 KMDropView *downView = [self hitCheckWithPoint:CGPointMake(x, y+squreWidth)];
                 if (downView) {
                     
                     [self locationExchangeView1:hitView withView2:downView userInfo:@"this->down: two cubes' color did change!"];
                 }
+                
+                break;
+            }
+            
+            case KMPanGestureRecognizerDirectionUnknown: {
                 
                 break;
             }
@@ -408,24 +407,20 @@ CGSize DROP_SIZE = {50, 50};
     view1.alpha = 0;
     view2.alpha = 0;
     
-    UIView *A = [UIView new];
-    A.frame = view1.frame;
-    A.backgroundColor = view1.insideSqureColor;
-    [self addSubview:A];
-    
-    UIView *B = [UIView new];
-    B.frame = view2.frame;
-    B.backgroundColor = view2.insideSqureColor;
+    // 先[self addSubview:B]就能使在动画执行时，A在B的上层，看起来更加舒服
+    KMDropView *B = [KMDropView duplicateFrom:view2];
     [self addSubview:B];
+    
+    KMDropView *A = [KMDropView duplicateFrom:view1];
+    [self addSubview:A];
     
     CGPoint centerA = A.center;
     CGPoint centerB = B.center;
     
-    
     [UIView animateWithDuration:0.5 animations:^{
-        B.center = centerA;
-        A.center = centerB;
         
+        A.center = centerB;
+        B.center = centerA;
     } completion:^(BOOL finished) {
         UIColor *tmpCoclor = view1.insideSqureColor;
         view1.insideSqureColor = view2.insideSqureColor;
@@ -461,29 +456,25 @@ CGSize DROP_SIZE = {50, 50};
     [self removeThreeSameColor];
 }
 
-#pragma mark - Touch Handling
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+#pragma mark - <KMPanGestureRecognizerDelegate>
+- (void)gestureBeganAtPoint:(CGPoint)beganPoint
 {
-    UITouch *touch = [touches anyObject];
-    _touchBeganPoint = [touch locationInView:self];
-    
-    // 检测_touchBeganPoint所在的view最上层subview的class
-    KMDropView *hitView = [self hitCheckWithPoint:_touchBeganPoint];
+    // 检测_touchBeganPoint所在的view是否属于KMDropView
+    KMDropView *hitView = [self hitCheckWithPoint:beganPoint];
     // 如果返回不为nil，就说明它是(KMDropView *)
     if (hitView) {
         hitView.state = KMDropViewStateHighlight;
     }
 }
 
-- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+- (void)gestureEndedAtPoint:(CGPoint)endedPoint withBeganPoint:(CGPoint)beganPoint gestureDirection:(KMPanGestureRecognizerDirection)diretion
 {
-    // 检测_touchBeganPoint所在的view最上层subview的class
-    KMDropView *hitView = [self hitCheckWithPoint:_touchBeganPoint];
+    // 检测_touchBeganPoint所在的view是否属于KMDropView
+    KMDropView *hitView = [self hitCheckWithPoint:beganPoint];
     // 如果返回不为nil，就说明它是(KMDropView *)
     if (hitView) {
         hitView.state = KMDropViewStateNormal;
     }
 }
-
 
 @end
