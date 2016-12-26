@@ -19,7 +19,7 @@ static const void *KMAlertViewKey = "KMAlertViewKey";
     self.delegate = self;
 }
 
-#pragma mark - 
+#pragma mark - <UIAlertViewDelegate>
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     ActionBlock action = objc_getAssociatedObject(self, KMAlertViewKey);
